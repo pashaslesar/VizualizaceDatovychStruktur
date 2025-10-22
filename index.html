@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vizualizace struktur</title>
+    <link rel="stylesheet" href="/pages/styles.css" />
+  </head>
+  <body class="home">
+    <nav class="navbar">
+      <div class="nav-left">
+        <a class="brand" href="/">VISUAL DS</a>
+      </div>
+      <div class="nav-center">
+        <input id="search" type="search" placeholder="Hledat: linked list, stack, queue…" aria-label="Hledat struktury" />
+      </div>
+      <div class="nav-right">
+        <a class="btn ghost" href="/">← Na hlavní</a>
+        <a class="btn primary" href="#" onclick="alert('Později!');return false;">Registrace</a>
+      </div>
+    </nav>
+
+    <main class="container">
+      <header class="lead">
+        <h1>Co chcete studovat?</h1>
+        <p>Interaktivní animace vkládání, odstraňování, procházení atd.</p>
+      </header>
+
+      <section id="grid" class="grid">
+        <article class="card" data-name="linked list" data-tags="list singly doubly queue deque nodes pointers">
+          <a class="card-link" href="/pages/linkedlist.html">
+            <div class="thumb thumb-blue">
+              <svg viewBox="0 0 240 120" width="100%" height="100%" aria-hidden="true">
+                <rect x="12" y="40" width="60" height="40" rx="6"></rect>
+                <rect x="92" y="40" width="60" height="40" rx="6"></rect>
+                <rect x="172" y="40" width="60" height="40" rx="6"></rect>
+                <path d="M72,60 L92,60 M152,60 L172,60" stroke-width="6" fill="none" class="stroke"></path>
+              </svg>
+            </div>
+            <div class="card-body">
+              <h2>Linked List</h2>
+              <p>Vkládání a mazaní uzlů, posouvání kroků, zvýraznění ukazatelů.</p>
+              <div class="tags">
+                <span class="tag">list</span>
+                <span class="tag">pointers</span>
+                <span class="tag live">ready to go</span>
+              </div>
+            </div>
+          </a>
+        </article>
+
+        <article class="card" data-name="stack" data-tags="lifo push pop array list">
+          <a class="card-link soon" href="#" onclick="return false;">
+            <div class="thumb thumb-green">
+              <svg viewBox="0 0 240 120" width="100%" height="100%" aria-hidden="true">
+                <rect x="70" y="70" width="100" height="14" rx="4"></rect>
+                <rect x="70" y="50" width="100" height="14" rx="4"></rect>
+                <rect x="70" y="30" width="100" height="14" rx="4"></rect>
+              </svg>
+            </div>
+            <div class="card-body">
+              <h2>Stack</h2>
+              <p>Push/Pop, vrchol zásobníku, přetečení.</p>
+              <div class="tags">
+                <span class="tag">lifo</span>
+                <span class="tag">push</span>
+                <span class="tag soon">později</span>
+              </div>
+            </div>
+          </a>
+        </article>
+
+        <article class="card" data-name="queue" data-tags="fifo enqueue dequeue list array">
+          <a class="card-link soon" href="#" onclick="return false;">
+            <div class="thumb thumb-orange">
+              <svg viewBox="0 0 240 120" width="100%" height="100%" aria-hidden="true">
+                <circle cx="60" cy="60" r="14"></circle>
+                <circle cx="110" cy="60" r="14"></circle>
+                <circle cx="160" cy="60" r="14"></circle>
+                <path d="M190,60 l24,0" stroke-width="6" class="stroke" fill="none"></path>
+              </svg>
+            </div>
+            <div class="card-body">
+              <h2>Queue</h2>
+              <p>Fronta FIFO, head/tail, kruhová implementace.</p>
+              <div class="tags">
+                <span class="tag">fifo</span>
+                <span class="tag">enqueue</span>
+                <span class="tag soon">později</span>
+              </div>
+            </div>
+          </a>
+        </article>
+
+        <article class="card" data-name="binary heap" data-tags="heap priority queue min-heap max-heap">
+          <a class="card-link soon" href="#" onclick="return false;">
+            <div class="thumb thumb-green">
+              <svg viewBox="0 0 240 120" width="100%" height="100%" aria-hidden="true">
+                <path d="M120,40 L78,48 M120,40 L162,48 M78,72 L56,80 M78,72 L100,80 M162,72 L140,80 M162,72 L184,80"
+                      class="stroke" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle cx="120" cy="28" r="12"></circle>
+                <circle cx="78"  cy="60" r="12"></circle>
+                <circle cx="162" cy="60" r="12"></circle>
+                <circle cx="56"  cy="92" r="12"></circle>
+                <circle cx="100" cy="92" r="12"></circle>
+                <circle cx="140" cy="92" r="12"></circle>
+                <circle cx="184" cy="92" r="12"></circle>
+              </svg>
+            </div>
+            <div class="card-body">
+              <h2>Binary Heap</h2>
+              <p>Prioritní fronta na haldě: vložení, vyjmutí minima/maxima.</p>
+              <div class="tags"><span class="tag">heap</span><span class="tag">priority</span><span class="tag soon">později</span></div>
+            </div>
+          </a>
+        </article>
+
+        <article class="card" data-name="graph" data-tags="graph bfs dfs shortest path">
+          <a class="card-link soon" href="#" onclick="return false;">
+            <div class="thumb thumb-blue">
+              <svg viewBox="0 0 240 120" width="100%" height="100%" aria-hidden="true">
+                <path
+                  d="M50,30 L110,25 L180,35 M50,30 L70,85 L150,90 L180,35"
+                  class="stroke"
+                  stroke-width="6"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="stroke:#ffffff1a"
+                ></path>
+
+                <circle cx="50"  cy="30" r="12" style="fill:#fff8"></circle>
+                <circle cx="110" cy="25" r="12" style="fill:#fff8"></circle>
+                <circle cx="180" cy="35" r="12" style="fill:#fff8"></circle>
+                <circle cx="70"  cy="85" r="12" style="fill:#fff8"></circle>
+                <circle cx="150" cy="90" r="12" style="fill:#fff8"></circle>
+              </svg>
+            </div>
+            <div class="card-body">
+              <h2>Graph</h2>
+              <p>Grafy: prohledávání BFS/DFS, nejkratší cesty.</p>
+              <div class="tags"><span class="tag">graph</span><span class="tag">bfs</span><span class="tag soon">později</span></div>
+            </div>
+          </a>
+        </article>
+
+        <article class="card" data-name="array" data-tags="array indexing dynamic resize">
+          <a class="card-link soon" href="#" onclick="return false;">
+            <div class="thumb thumb-orange">
+              <svg viewBox="0 0 240 120" width="100%" height="100%" aria-hidden="true">
+                <rect x="24"  y="50" width="28" height="28" rx="4"></rect>
+                <rect x="58"  y="50" width="28" height="28" rx="4"></rect>
+                <rect x="92"  y="50" width="28" height="28" rx="4"></rect>
+                <rect x="126" y="50" width="28" height="28" rx="4"></rect>
+                <rect x="160" y="50" width="28" height="28" rx="4"></rect>
+                <rect x="194" y="50" width="28" height="28" rx="4"></rect>
+              </svg>
+            </div>
+            <div class="card-body">
+              <h2>Array</h2>
+              <p>Pole: indexace, vkládání/odstraňování, dynamické rozšiřování.</p>
+              <div class="tags"><span class="tag">array</span><span class="tag">index</span><span class="tag soon">později</span></div>
+            </div>
+          </a>
+        </article>
+
+        <article class="card" data-name="binary search tree bst" data-tags="bst tree insert delete search inorder preorder postorder">
+          <a class="card-link soon" href="#" onclick="return false;">
+            <div class="thumb thumb-blue">
+              <svg viewBox="0 0 240 120" width="100%" height="100%" aria-hidden="true">
+                <path d="M120,42 L70,58 M120,42 L170,58 M70,82 L48,88 M70,82 L92,88 M170,82 L148,88 M170,82 L192,88"
+                      class="stroke" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle cx="120" cy="30" r="12"></circle>
+                <circle cx="70"  cy="70" r="12"></circle>
+                <circle cx="170" cy="70" r="12"></circle>
+                <circle cx="48"  cy="100" r="12"></circle>
+                <circle cx="92"  cy="100" r="12"></circle>
+                <circle cx="148" cy="100" r="12"></circle>
+                <circle cx="192" cy="100" r="12"></circle>
+              </svg>
+            </div>
+            <div class="card-body">
+              <h2>Binary Search Tree</h2>
+              <p>BST: vkládání, odstraňování, vyhledávání a průchody stromem.</p>
+              <div class="tags"><span class="tag">bst</span><span class="tag">tree</span><span class="tag soon">později</span></div>
+            </div>
+          </a>
+        </article>
+
+      </section>
+
+      <div id="empty" class="empty" hidden>
+        <p>Nic nebylo nalezeno. Zkuste: <code>list</code>, <code>stack</code>, <code>queue</code>…</p>
+      </div>
+    </main>
+
+    <script type="module" src="/src/home.ts"></script>
+  </body>
+</html>

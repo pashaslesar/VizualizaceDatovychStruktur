@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vizualizace struktur</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="ll-page">
+    <nav class="navbar navbar-compact">
+      <div class="nav-left">
+        <a class="brand" href="/">VISUAL DS</a>
+      </div>
+      <div class="nav-center">
+        <h1 class="navbar-title">Linked List - vizualizace</h1>
+        <span id="stepInfo" class="nav-step muted"></span>
+      </div>
+      <div class="nav-right">
+        <a class="btn ghost" href="/">← Na hlavní</a>
+        <a class="btn primary" href="#" onclick="alert('Později!');return false;">Registrace</a>
+      </div>
+    </nav>
+
+    <main class="container-wide ll-layout">
+      <aside class="ll-sidebar">
+        <h2>Operace</h2>
+
+        <div class="group">
+          <label class="lbl" for="valInput">Hodnota</label>
+          <input id="valInput" type="number" value="10" class="inp"/>
+        </div>
+
+        <div class="group">
+          <button id="btnInsertHead"  class="btn primary full">Vložit na začátek</button>
+          <button id="btnInsertTail"  class="btn full">Vložit na konec</button>
+        </div>
+
+        <div class="group">
+          <button id="btnDeleteHead" class="btn full">Odstranit začátek</button>
+          <button id="btnDeleteTail" class="btn full">Odstranit konec</button>
+        </div>
+
+        <div class="group">
+          <button id="btnDeleteValue" class="btn full">Odstranit hodnotu</button>
+          <button id="btnFindValue"   class="btn full">Najít hodnotu</button>
+        </div>
+
+        <div class="group">
+          <button id="btnRandom" class="btn full">Náhodný seznam</button>
+          <button id="btnClear"  class="btn full">Vyčistit seznam</button>
+        </div>
+
+        <p class="hint">Tip: Enter - provést poslední operaci</p>
+      </aside>
+
+      <section class="ll-stage">
+        <div class="stage-wrap">
+          <svg id="stage" viewBox="0 0 1600 600" preserveAspectRatio="xMidYMid meet"></svg>
+
+          <div class="player">
+            <button id="btnPrev"  class="btn icon" title="Krok zpět">&#x23EE;</button>
+            <button id="btnPlay"  class="btn icon" title="Přehrát">&#x25B6;</button>
+            <button id="btnPause" class="btn icon" title="Pauza">&#x23F8;</button>
+            <button id="btnNext"  class="btn icon" title="Krok vpřed">&#x23ED;</button>
+
+            <div class="divider"></div>
+
+            <label class="speed">
+              <input id="speedRange" type="range" min="120" max="1500" step="60" value="600" />
+            </label>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/src/linkedlist.ts"></script>
+  </body>
+</html>
