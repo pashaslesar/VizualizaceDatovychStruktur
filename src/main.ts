@@ -1,6 +1,6 @@
 import { Timeline } from "./core/Timeline";
 import { SvgRenderer } from "./render/SvgRenderer";
-import { LinkedListViz } from "./structures/LinkedListViz";
+import { LinkedListViz } from "./structures/LinkedListOperations";
 
 const svg = document.querySelector<SVGSVGElement>("#stage")!;
 const stepInfo = document.querySelector<HTMLSpanElement>("#stepInfo")!;

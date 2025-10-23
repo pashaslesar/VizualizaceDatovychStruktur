@@ -2,7 +2,7 @@ import type { Frame, NodeState, EdgeState } from "../core/types";
 
 let NEXT_ID = 1;
 
-export class LinkedListViz {
+export class LinkedListOperations {
   private values: number[] = [];
   
   insertHead(value: number): Frame[] {

@@ -1,8 +1,8 @@
 import type { Frame, NodeState, EdgeState } from "../core/types";
 
-const NODE_W = 70;
-const NODE_H = 40;
-const GAP = 6;
+const NODE_W = 100;
+const NODE_H = 60;
+const GAP = 5;
 
 export class SvgRenderer {
   private svg: SVGSVGElement;
