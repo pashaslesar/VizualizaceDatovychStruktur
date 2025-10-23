@@ -1,6 +1,6 @@
 import { Timeline } from "./core/Timeline";
 import { SvgRenderer } from "./render/SvgRenderer";
-import { LinkedListViz } from "./structures/LinkedListOperations";
+import { LinkedListOperations } from "./structures/LinkedListOperations";
 
 const svg = document.querySelector<SVGSVGElement>("#stage")!;
 const stepInfo = document.querySelector<HTMLSpanElement>("#stepInfo")!;
@@ -22,7 +22,7 @@ const timeline = new Timeline(
   (a, b, t) => renderer.renderLerp(a, b, t)
 );
 
-const list = new LinkedListViz();
+const list = new LinkedListOperations();
 
 timeline.setFrames([list.snapshot()], "end");
 
