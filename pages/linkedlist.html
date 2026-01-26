@@ -17,7 +17,6 @@
       </div>
       <div class="nav-right">
         <a class="btn ghost" href="/">← Na hlavní</a>
-        <a class="btn primary" href="#" onclick="alert('Později!');return false;">Registrace</a>
       </div>
     </nav>
 
@@ -28,6 +27,15 @@
         <div class="group">
           <label class="lbl" for="valInput">Hodnota</label>
           <input id="valInput" type="number" value="10" class="inp"/>
+        </div>
+
+        <div class="group">
+          <label class="lbl" for="listType">Typ seznamu</label>
+          <select id="listType" class="inp">
+            <option value="singly">Jednosměrný</option>
+            <option value="doubly">Dvousměrný</option>
+            <option value="doubly-cyclic">Dvousměrný cyklický</option>
+          </select>
         </div>
 
         <div class="group">

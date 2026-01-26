@@ -9,8 +9,11 @@
   --green:#70d091;
   --orange:#ffb64d;
   --blue:#68c0ff;
+  --hl-stroke: #6ea8fe;
+  --hl-fill: #1a2a3e;
   --shadow:0 4px 18px rgba(0,0,0,.25);
 }
+
 body{
   background:var(--bg);
   color:var(--text);
@@ -149,11 +152,13 @@ body{
   display:flex; align-items:flex-end; gap:10px;
   margin:12px 0 10px;
 }
+
 .ll-page .field{display:flex;flex-direction:column;gap:6px}
 .ll-page .field input{
   width:140px; padding:8px 10px; border-radius:10px;
   background:var(--panel-2); border:1px solid var(--border); color:var(--text);
 }
+
 .ll-page .ll-stage .stage-wrap{
   position:relative;
   background:var(--panel);
@@ -163,12 +168,14 @@ body{
   overflow:hidden;
   min-height: calc(100vh - 220px);
 }
+
 .ll-page #stage{
   width:100%;
   height: calc(100vh - 260px);
   display:block;
   background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
 }
+
 .ll-page .player{
   position:absolute; left:50%; bottom:12px; transform:translateX(-50%);
   display:flex; align-items:center; gap:8px;
@@ -179,11 +186,13 @@ body{
   backdrop-filter: blur(6px);
   box-shadow:0 6px 20px rgba(0,0,0,.25);
 }
+
 .ll-page .player .btn.icon{
   width:40px; height:36px; display:inline-flex; align-items:center; justify-content:center;
   background:var(--panel-2); color:var(--text); border:1px solid var(--border);
   border-radius:10px;
 }
+
 .ll-page .player .btn.icon:hover{filter:brightness(1.1)}
 .ll-page .player .divider{width:1px;height:24px;background:var(--border);margin:0 4px}
 .ll-page .player .speed{display:flex;align-items:center;gap:10px;color:var(--muted)}
@@ -192,15 +201,18 @@ body{
   background:var(--panel-2); border:1px solid var(--border);
   appearance:none; outline:none;
 }
+
 .ll-page .player .speed input[type="range"]::-webkit-slider-thumb{
   appearance:none; width:16px; height:16px; border-radius:50%;
   background:var(--primary); border:0; cursor:pointer;
   box-shadow:0 0 0 3px rgba(110,168,254,.2);
 }
+
 .ll-page .player .speed input[type="range"]::-moz-range-thumb{
   width:16px; height:16px; border-radius:50%;
   background:var(--primary); border:0; cursor:pointer;
 }
+
 .ll-page .controls,
 .ll-page .stage{display:none}
 
@@ -219,9 +231,11 @@ body{
   align-self:start;
   position:sticky; top:84px;
 }
+
 .ll-page .ll-sidebar h2{
   margin:0 0 12px; font-size:16px; opacity:.9;
 }
+
 .ll-page .ll-sidebar .group{ display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:10px; }
 .ll-page .ll-sidebar .group:nth-child(2) .btn,
 .ll-page .ll-sidebar .group:nth-child(3) .btn,
@@ -246,4 +260,71 @@ body{
   .ll-page .ll-sidebar{
     position:static; order:-1;
   }
+}
+
+body.theme-green {
+  --primary: #39d98a;
+}
+
+body.theme-green .ll-page .player .speed input[type="range"]::-webkit-slider-thumb{
+  background: var(--primary);
+  box-shadow: 0 0 0 3px rgba(57, 217, 138, 0.2);
+}
+
+body.theme-green .bst-hide-listtype {
+  display: none;
+}
+
+.ll-page .ll-sidebar-col{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-self:start;
+}
+
+.ll-page .ll-note{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  padding:14px 14px 12px;
+}
+
+.ll-page .ll-note__title{
+  font-size:13px;
+  font-weight:700;
+  opacity:.95;
+  margin:0 0 6px;
+}
+
+.ll-page .ll-note__text{
+  font-size:12px;
+  line-height:1.35;
+  color:var(--muted);
+}
+
+@keyframes bstLimitBlink {
+  0%   { border-color: var(--border); box-shadow: var(--shadow); }
+  25%  { border-color: var(--accent, var(--green)); box-shadow: 0 0 0 3px rgba(57, 217, 138, .20), var(--shadow); }
+  50%  { border-color: var(--border); box-shadow: var(--shadow); }
+  75%  { border-color: var(--accent, var(--green)); box-shadow: 0 0 0 3px rgba(57, 217, 138, .20), var(--shadow); }
+  100% { border-color: var(--border); box-shadow: var(--shadow); }
+}
+
+.ll-page .ll-note.blink-limit{
+  animation: bstLimitBlink 700ms ease-in-out;
+}
+
+body.theme-green{
+  --hl-stroke: rgba(98, 233, 157, 0.747);
+  --hl-fill: rgba(98, 233, 156, 0.164);
+}
+
+.ll-traversal{
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  letter-spacing: .2px;
+  line-height: 1.4;
+  white-space: normal;
+  word-break: break-word;
 }

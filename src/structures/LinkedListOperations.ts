@@ -1,15 +1,25 @@
-import type { Frame, NodeState, EdgeState } from "../core/types";
+import type { Frame, NodeState, EdgeState, ListType } from "../core/types";
 
 let NEXT_ID = 1;
 
 export class LinkedListOperations {
   private values: number[] = [];
-  
+  private type: ListType = "singly";
+
+  setType(t: ListType) {
+    this.type = t;
+  }
+
+  getType(): ListType {
+    return this.type;
+  }
+
   insertHead(value: number): Frame[] {
     if (this.values.includes(value)) {
       const nodes = this.layout(this.values);
       return [this.frame(nodes, this.edges(nodes), "Hodnota již existuje – vložení zrušeno")];
     }
+
     const before = this.layout(this.values);
     const newNode: NodeState = { id: NEXT_ID++, value, x: 120, y: 120, highlight: true };
 
@@ -18,13 +28,19 @@ export class LinkedListOperations {
 
     let f3: Frame;
     if (before.length) {
-      f3 = this.frame([...before, newNode], [...this.edges(before), { from: newNode.id, to: before[0].id }], "Nový uzel ukazuje na bývalou hlavu");
+      f3 = this.frame(
+        [...before, newNode],
+        [...this.edges(before), { from: newNode.id, to: before[0].id }],
+        "Nový uzel ukazuje na bývalou hlavu"
+      );
     } else {
       f3 = this.frame([...before, newNode], [], "Nový uzel je první prvek");
     }
 
     this.values = [value, ...this.values];
+    
     const after = this.layout(this.values, [...before, newNode]);
+    after.forEach(n => (n.highlight = false));
     const f4 = this.frame(after, this.edges(after), "Nový uzel se stává hlavou");
 
     return [f1, f2, f3, f4];
@@ -35,6 +51,7 @@ export class LinkedListOperations {
       const nodes = this.layout(this.values);
       return [this.frame(nodes, this.edges(nodes), "Hodnota již existuje – vložení zrušeno")];
     }
+
     const before = this.layout(this.values);
     const newNode: NodeState = { id: NEXT_ID++, value, x: 120, y: 120, highlight: true };
 
@@ -43,11 +60,20 @@ export class LinkedListOperations {
 
     if (before.length) {
       const last = before[before.length - 1];
-      const f3 = this.frame([...before, newNode], [...this.edges(before), { from: last.id, to: newNode.id }], "Poslední ukazuje na nový uzel");
+      const f3 = this.frame(
+        [...before, newNode],
+        [...this.edges(before), { from: last.id, to: newNode.id }],
+        "Poslední ukazuje na nový uzel"
+      );
+
       const afterVals = [...this.values, value];
+
       const after = this.layout(afterVals, [...before, newNode]);
+      after.forEach(n => (n.highlight = false));
       const f4 = this.frame(after, this.edges(after), "Nový uzel se stává koncem");
+
       this.values = afterVals;
+
       return [f1, f2, f3, f4];
     } else {
       this.values = [value];
@@ -93,14 +119,24 @@ export class LinkedListOperations {
     if (idx === -1) return [this.frame(before, this.edges(before), "Hodnota nebyla nalezena")];
 
     const f1 = this.frame(before, this.edges(before), "Před odstraněním");
+
+    before.forEach(n => (n.highlight = false));
     before[idx].highlight = true;
-    const f2 = this.frame(before, this.edges(before), "Označení uzlu");
+    const f2 = this.frame(before, this.edges(before), "Odstraňovaný uzel");
 
-    this.values = this.values.filter(v => v !== value);
-    const after = this.layout(this.values);
-    const f3 = this.frame(after, this.edges(after), "Uzel odstraněn");
+    const afterVals = this.values.filter(v => v !== value);
 
-    return [f1, f2, f3];
+    const frozenNodes = this.freezeLayoutFrom(before, afterVals);
+    const f3 = this.frame(frozenNodes, this.edges(before), "Uzel zmizí");
+
+    const bridgedEdges = this.edgesAfterRemove(before, value);
+    const f4 = this.frame(frozenNodes, bridgedEdges, "Přesměrování ukazatelů");
+
+    this.values = afterVals;
+    const aligned = this.layout(this.values, frozenNodes);
+    const f5 = this.frame(aligned, this.edges(aligned), "Seznam vyrovnán");
+
+    return [f1, f2, f3, f4, f5];
   }
 
   findValue(value: number): Frame[] {
@@ -108,17 +144,42 @@ export class LinkedListOperations {
     const edges = this.edges(nodes);
     const frames: Frame[] = [];
 
-    frames.push(this.frame(nodes, edges, "Hledání hodnoty"));
+    const clear = () => nodes.forEach(n => (n.highlight = false));
+
+    const push = (label: string) => frames.push(this.frame(nodes, edges, label));
+
+    const pushFast = (label: string) => {
+      const f = this.frame(nodes, edges, label);
+      (f as any).durationMs = 50;
+      frames.push(f);
+    };
+
+    push("Hledání hodnoty");
+
     for (let i = 0; i < nodes.length; i++) {
-      nodes.forEach(n => (n.highlight = false));
+      clear();
       nodes[i].highlight = true;
-      frames.push(this.frame(nodes, edges, `Kontrola pozice ${i + 1}`));
+      push(`Kontrola pozice ${i + 1}`);
+
       if (nodes[i].value === value) {
-        frames.push(this.frame(nodes, edges, "Nalezeno"));
+        push("Nalezeno");
+
+        const blinkTimes = 2;
+        for (let k = 0; k < blinkTimes; k++) {
+          clear();
+          pushFast(" ");
+          nodes[i].highlight = true;
+          pushFast(" ");
+        }
+
+        clear();
+        push("Nalezeno");
         return frames;
       }
     }
-    frames.push(this.frame(nodes, edges, "Nebylo nalezeno"));
+
+    clear();
+    push("Nebylo nalezeno");
     return frames;
   }
 
@@ -153,22 +214,158 @@ export class LinkedListOperations {
   }
 
   private frame(nodes: NodeState[], edges: EdgeState[], label: string): Frame {
-    return { nodes: nodes.map(n => ({ ...n })), edges: edges.map(e => ({ ...e })), label };
+    const nn = nodes.map(n => ({ ...n }));
+    const ee = edges.map(e => ({ ...e }));
+
+    nn.forEach(n => {
+      n.isHead = false;
+      n.isTail = false;
+    });
+
+    if (nn.length > 0) {
+      nn[0].isHead = true;
+      nn[nn.length - 1].isTail = true;
+    }
+
+    return {
+      nodes: nn,
+      edges: ee,
+      label,
+      layout: this.type === "singly" ? "line" : "circle",
+    };
   }
 
   private layout(values: number[], reuseFrom?: NodeState[]): NodeState[] {
+    const nodes =
+      this.type === "singly"
+        ? this.layoutLine(values, reuseFrom)
+        : this.layoutCircle(values, reuseFrom);
+
+    if (nodes.length > 0) {
+      nodes.forEach(n => { n.isHead = false; n.isTail = false; });
+
+      nodes[0].isHead = true;
+
+      if (this.type !== "doubly-cyclic") {
+        nodes[nodes.length - 1].isTail = true;
+      }
+    }
+
+    return nodes;
+  }
+
+  private layoutLine(values: number[], reuseFrom?: NodeState[]): NodeState[] {
     const baseX = 140, stepX = 160, y = 220;
+
     return values.map((v, i) => {
       const existing = reuseFrom?.find(n => n.value === v);
       const id = existing?.id ?? (NEXT_ID++);
-      const highlight = existing?.highlight && i === 0 ? true : false;
-      return { id, value: v, x: baseX + i * stepX, y, highlight };
+      return {
+        id,
+        value: v,
+        x: baseX + i * stepX,
+        y,
+        highlight: !!existing?.highlight,
+        isHead: i === 0,
+        isTail: i === values.length - 1,
+      };
+    });
+  }
+
+  private layoutCircle(values: number[], reuseFrom?: NodeState[]): NodeState[] {
+    const cx = 800;
+    const cy = 280;
+    const r = 220;
+
+    const n = values.length;
+    if (n === 0) return [];
+
+    const start = -Math.PI / 2;
+
+    return values.map((v, i) => {
+      const existing = reuseFrom?.find(n => n.value === v);
+      const id = existing?.id ?? (NEXT_ID++);
+
+      const a = start + (2 * Math.PI * i) / n;
+      return {
+        id,
+        value: v,
+        x: cx + r * Math.cos(a),
+        y: cy + r * Math.sin(a),
+        highlight: !!existing?.highlight,
+        isHead: i === 0,
+        isTail: i === n - 1,
+      };
     });
   }
 
   private edges(nodes: NodeState[]): EdgeState[] {
     const arr: EdgeState[] = [];
-    for (let i = 0; i < nodes.length - 1; i++) arr.push({ from: nodes[i].id, to: nodes[i + 1].id });
+    const n = nodes.length;
+
+    if (this.type === "singly") {
+      for (let i = 0; i < n - 1; i++) arr.push({ from: nodes[i].id, to: nodes[i + 1].id });
+      return arr;
+    }
+
+    for (let i = 0; i < n - 1; i++) {
+      arr.push({ from: nodes[i].id, to: nodes[i + 1].id });
+      arr.push({ from: nodes[i + 1].id, to: nodes[i].id });
+    }
+
+    if (this.type === "doubly-cyclic" && n > 1) {
+      arr.push({ from: nodes[n - 1].id, to: nodes[0].id });
+      arr.push({ from: nodes[0].id, to: nodes[n - 1].id });
+    }
+
     return arr;
+  }
+
+  private freezeLayoutFrom(before: NodeState[], newValues: number[]): NodeState[] {
+    return newValues.map(v => {
+      const old = before.find(n => n.value === v);
+      return {
+        id: old!.id,
+        value: v,
+        x: old!.x,
+        y: old!.y,
+        highlight: false,
+        ...(old as any),
+      } as any;
+    });
+  }
+
+  private edgesAfterRemove(beforeNodes: NodeState[], removedValue: number): EdgeState[] {
+    const n = beforeNodes.length;
+    const idx = beforeNodes.findIndex(x => x.value === removedValue);
+    if (idx === -1) return this.edges(beforeNodes);
+
+    const prev = idx > 0 ? beforeNodes[idx - 1] : null;
+    const cur  = beforeNodes[idx];
+    const next = idx < n - 1 ? beforeNodes[idx + 1] : null;
+
+    const isCyclic = this.type === "doubly-cyclic";
+
+    const oldEdges = this.edges(beforeNodes);
+
+    const filtered = oldEdges.filter(e => e.from !== cur.id && e.to !== cur.id);
+
+    if (this.type === "singly") {
+      if (prev && next) filtered.push({ from: prev.id, to: next.id });
+      return filtered;
+    }
+
+    if (prev && next) {
+      filtered.push({ from: prev.id, to: next.id });
+      filtered.push({ from: next.id, to: prev.id });
+    } else if (isCyclic && n > 2) {
+      const newFirst = idx === 0 ? beforeNodes[1] : beforeNodes[0];
+      const newLast  = idx === n - 1 ? beforeNodes[n - 2] : beforeNodes[n - 1];
+
+      filtered.push({ from: newLast.id, to: newFirst.id });
+      filtered.push({ from: newFirst.id, to: newLast.id });
+    }
+
+    return filtered;
   }
 }

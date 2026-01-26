@@ -2,24 +2,25 @@ import { Timeline } from "./core/Timeline";
 import { SvgRenderer } from "./render/SvgRenderer";
 import { LinkedListOperations } from "./structures/LinkedListOperations";
 
-const svg       = document.querySelector<SVGSVGElement>("#stage")!;
-const stepInfo  = document.querySelector<HTMLSpanElement>("#stepInfo")!;
+const svg        = document.querySelector<SVGSVGElement>("#stage")!;
+const stepInfo   = document.querySelector<HTMLSpanElement>("#stepInfo")!;
 
-const btnNext   = document.querySelector<HTMLButtonElement>("#btnNext")!;
-const btnPrev   = document.querySelector<HTMLButtonElement>("#btnPrev")!;
-const btnPlay   = document.querySelector<HTMLButtonElement>("#btnPlay")!;
-const btnPause  = document.querySelector<HTMLButtonElement>("#btnPause")!;
-const speedRange= document.querySelector<HTMLInputElement>("#speedRange")!;
+const btnNext    = document.querySelector<HTMLButtonElement>("#btnNext")!;
+const btnPrev    = document.querySelector<HTMLButtonElement>("#btnPrev")!;
+const btnPlay    = document.querySelector<HTMLButtonElement>("#btnPlay")!;
+const btnPause   = document.querySelector<HTMLButtonElement>("#btnPause")!;
+const speedRange = document.querySelector<HTMLInputElement>("#speedRange")!;
+const listType   = document.querySelector<HTMLSelectElement>("#listType")!;
 
-const valInput      = document.querySelector<HTMLInputElement>("#valInput")!;
-const btnInsertHead = document.querySelector<HTMLButtonElement>("#btnInsertHead")!;
-const btnInsertTail = document.querySelector<HTMLButtonElement>("#btnInsertTail")!;
-const btnDeleteHead = document.querySelector<HTMLButtonElement>("#btnDeleteHead")!;
-const btnDeleteTail = document.querySelector<HTMLButtonElement>("#btnDeleteTail")!;
-const btnDeleteValue= document.querySelector<HTMLButtonElement>("#btnDeleteValue")!;
-const btnFindValue  = document.querySelector<HTMLButtonElement>("#btnFindValue")!;
-const btnRandom     = document.querySelector<HTMLButtonElement>("#btnRandom")!;
-const btnClear      = document.querySelector<HTMLButtonElement>("#btnClear")!;
+const valInput       = document.querySelector<HTMLInputElement>("#valInput")!;
+const btnInsertHead  = document.querySelector<HTMLButtonElement>("#btnInsertHead")!;
+const btnInsertTail  = document.querySelector<HTMLButtonElement>("#btnInsertTail")!;
+const btnDeleteHead  = document.querySelector<HTMLButtonElement>("#btnDeleteHead")!;
+const btnDeleteTail  = document.querySelector<HTMLButtonElement>("#btnDeleteTail")!;
+const btnDeleteValue = document.querySelector<HTMLButtonElement>("#btnDeleteValue")!;
+const btnFindValue   = document.querySelector<HTMLButtonElement>("#btnFindValue")!;
+const btnRandom      = document.querySelector<HTMLButtonElement>("#btnRandom")!;
+const btnClear       = document.querySelector<HTMLButtonElement>("#btnClear")!;
 
 const renderer = new SvgRenderer(svg);
 const timeline = new Timeline(
@@ -32,6 +33,11 @@ const timeline = new Timeline(
 
 const list = new LinkedListOperations();
 timeline.setFrames([list.snapshot()], "end");
+
+listType.onchange = () => {
+  list.setType(listType.value as any);
+  timeline.setFrames([list.snapshot()], "end");
+};
 
 btnNext.onclick  = () => timeline.next();
 btnPrev.onclick  = () => timeline.prev();
@@ -47,14 +53,14 @@ speedRange.oninput = () => {
 const num = () => Number(valInput.value) || 0;
 const pushFrames = (frames: any[]) => timeline.append(frames);
 
-btnInsertHead.onclick = () => pushFrames(list.insertHead(num()));
-btnInsertTail.onclick = () => pushFrames(list.insertTail(num()));
-btnDeleteHead.onclick = () => pushFrames(list.deleteHead());
-btnDeleteTail.onclick = () => pushFrames(list.deleteTail());
-btnDeleteValue.onclick= () => pushFrames(list.deleteValue(num()));
-btnFindValue.onclick  = () => pushFrames(list.findValue(num()));
-btnRandom.onclick     = () => pushFrames(list.setRandom(4 + Math.floor(Math.random()*3)));
-btnClear.onclick      = () => pushFrames(list.reset());
+btnInsertHead.onclick  = () => pushFrames(list.insertHead(num()));
+btnInsertTail.onclick  = () => pushFrames(list.insertTail(num()));
+btnDeleteHead.onclick  = () => pushFrames(list.deleteHead());
+btnDeleteTail.onclick  = () => pushFrames(list.deleteTail());
+btnDeleteValue.onclick = () => pushFrames(list.deleteValue(num()));
+btnFindValue.onclick   = () => pushFrames(list.findValue(num()));
+btnRandom.onclick      = () => pushFrames(list.setRandom(4 + Math.floor(Math.random() * 3)));
+btnClear.onclick       = () => pushFrames(list.reset());
 
 window.addEventListener("keydown", (e) => {
   if (e.key === "/" && (document.activeElement as HTMLElement)?.tagName !== "INPUT") {

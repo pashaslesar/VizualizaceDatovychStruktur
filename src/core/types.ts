@@ -4,6 +4,10 @@ export type NodeState = {
   x: number;
   y: number;
   highlight?: boolean;
+  isHead?: boolean;
+  isTail?: boolean;
+  isRoot?: boolean;
+  isGhost?: boolean;
 };
 
 export type EdgeState = {
@@ -11,8 +15,14 @@ export type EdgeState = {
   to: number;
 };
 
+export type ListType = "singly" | "doubly" | "doubly-cyclic";
+
+export type LayoutType = "line" | "circle" | "tree";
+
 export type Frame = {
   nodes: NodeState[];
   edges: EdgeState[];
   label?: string;
+  layout?: LayoutType;
+  durationMs?: number;
 };
