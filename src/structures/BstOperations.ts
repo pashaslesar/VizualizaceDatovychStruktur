@@ -232,21 +232,6 @@ export class BstOperations {
         return frames;
     }
 
-    private findNode(value: number): BstNode | null {
-        let cur = this.root;
-        while (cur) {
-            if (cur.value === value) return cur;
-            cur = value < cur.value ? cur.left : cur.right;
-        }
-        return null;
-    }
-
-    private findMin(node: BstNode): BstNode {
-        let cur = node;
-        while (cur.left) cur = cur.left;
-        return cur;
-    }
-
     deleteRoot(): Frame[] {
         if (!this.root) {
             return [this.frame(this.layout(), this.edges(), "Strom je prázdný")];
