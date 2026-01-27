@@ -25,4 +25,9 @@ export type Frame = {
   label?: string;
   layout?: LayoutType;
   durationMs?: number;
+  
+  limitExceeded?: boolean;
+  capacity?: number;
+  size?: number;
+  lastIndex?: number;
 };

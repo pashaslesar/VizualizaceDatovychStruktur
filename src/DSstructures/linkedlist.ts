@@ -1,6 +1,6 @@
-import { Timeline } from "./core/Timeline";
-import { SvgRenderer } from "./render/SvgRenderer";
-import { LinkedListOperations } from "./structures/LinkedListOperations";
+import { Timeline } from "../core/Timeline";
+import { SvgRenderer } from "../render/SvgRenderer";
+import { LinkedListOperations } from "../DSoperations/LinkedListOperations";
 
 const svg        = document.querySelector<SVGSVGElement>("#stage")!;
 const stepInfo   = document.querySelector<HTMLSpanElement>("#stepInfo")!;

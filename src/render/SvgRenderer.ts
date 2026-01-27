@@ -4,10 +4,12 @@ const NODE_W = 100;
 const NODE_H = 60;
 const GAP = 5;
 
-const HEAD_COLOR = "#91B9C1";
-const TAIL_COLOR = "#D7EEF3";
 const ROOT_COLOR = "#729969";
 const GHOST_COLOR = "#ff5c5c";
+
+const setStyleVar = (el: SVGElement, prop: string, value: string) => {
+  (el as any).style.setProperty(prop, value);
+};
 
 export class SvgRenderer {
   private svg: SVGSVGElement;
@@ -71,32 +73,68 @@ export class SvgRenderer {
     const keep = new Set(nodes.map(n => n.id));
 
     const ensureBadge = (
-      gEl: SVGGElement,
-      cls: string,
+      host: SVGGElement,
+      badgeKey: "head" | "tail" | "root",
       text: string,
       x: number,
       y: number,
-      fill: string,
       visible: boolean,
       anchor: "start" | "middle" | "end" = "start",
     ) => {
-      let t = gEl.querySelector(`text.${cls}`) as SVGTextElement | null;
+      const sel = `g[data-badge="${badgeKey}"]`;
+      let bg = host.querySelector(sel) as SVGGElement | null;
 
-      if (!t) {
-        t = document.createElementNS(this.svg.namespaceURI, "text") as SVGTextElement;
-        t.setAttribute("class", cls);
+      if (!bg) {
+        bg = document.createElementNS(this.svg.namespaceURI, "g") as SVGGElement;
+        bg.setAttribute("data-badge", badgeKey);
+
+        const r = document.createElementNS(this.svg.namespaceURI, "rect") as SVGRectElement;
+        r.setAttribute("rx", "6");
+        r.setAttribute("ry", "6");
+        r.setAttribute("class", "array-badge");
+        bg.appendChild(r);
+
+        const t = document.createElementNS(this.svg.namespaceURI, "text") as SVGTextElement;
+        t.setAttribute("class", "array-badge-text");
         t.setAttribute("font-size", "10");
-        t.setAttribute("font-weight", "700");
+        t.setAttribute("font-weight", "800");
         t.setAttribute("font-family", "system-ui, -apple-system, Segoe UI, Roboto, Arial");
-        gEl.appendChild(t);
+        t.setAttribute("dominant-baseline", "middle");
+        t.setAttribute("text-anchor", anchor);
+        bg.appendChild(t);
+
+        host.appendChild(bg);
       }
 
-      t.textContent = text;
-      t.setAttribute("x", String(x));
-      t.setAttribute("y", String(y));
-      t.setAttribute("fill", fill);
-      t.setAttribute("text-anchor", anchor);
-      t.style.display = visible ? "block" : "none";
+      const rect = bg.querySelector("rect") as SVGRectElement;
+      const txt = bg.querySelector("text") as SVGTextElement;
+
+      txt.textContent = text;
+      txt.setAttribute("x", String(x));
+      txt.setAttribute("y", String(y));
+      txt.setAttribute("text-anchor", anchor);
+
+      const padX = 6;
+      // const padY = 4;
+      const approxCharW = 6.2;
+      const w = Math.max(28, Math.round(text.length * approxCharW) + padX * 2);
+      const h = 16;
+
+      let rx = x;
+      if (anchor === "start") rx = x - 2;
+      if (anchor === "middle") rx = x - w / 2;
+      if (anchor === "end") rx = x - w + 2;
+
+      rect.setAttribute("x", String(rx));
+      rect.setAttribute("y", String(y - h / 2));
+      rect.setAttribute("width", String(w));
+      rect.setAttribute("height", String(h));
+
+      setStyleVar(rect, "fill", "var(--hl-fill)");
+      setStyleVar(rect, "stroke", "var(--hl-stroke)");
+      setStyleVar(txt, "fill", "var(--array-tag-text, var(--hl-stroke))");
+
+      bg.style.display = visible ? "block" : "none";
     };
 
     nodes.forEach(n => {
@@ -147,34 +185,36 @@ export class SvgRenderer {
       const isRoot = !!(n as any).isRoot;
       const isGhost = !!(n as any).isGhost;
 
+      if (isHead) rectEl.setAttribute("data-head", "1");
+      else rectEl.removeAttribute("data-head");
+
+      if (isTail) rectEl.setAttribute("data-tail", "1");
+      else rectEl.removeAttribute("data-tail");
+
       const stroke =
         isGhost ? GHOST_COLOR :
         n.highlight ? "var(--hl-stroke)" :
         isRoot ? ROOT_COLOR :
-        isHead ? HEAD_COLOR :
-        isTail ? TAIL_COLOR :
+        (isHead || isTail) ? "var(--hl-stroke)" :
         "#2a2f3a";
 
       const fill =
         isGhost ? "rgba(255, 92, 92, 0.12)" :
         n.highlight ? "var(--hl-fill)" :
         isRoot ? "rgba(114, 153, 105, 0.18)" :
-        isHead ? "rgba(145, 185, 193, 0.18)" :
-        isTail ? "rgba(215, 238, 243, 0.18)" :
+        (isHead || isTail) ? "var(--hl-fill)" :
         "#1d2129";
 
-      rectEl.setAttribute("stroke", stroke);
-      rectEl.setAttribute("fill", fill);
+      setStyleVar(rectEl, "stroke", stroke);
+      setStyleVar(rectEl, "fill", fill);
 
       const v = (n as any).value;
       textEl.textContent = Number.isFinite(v) ? String(v) : "";
-
       textEl.setAttribute("y", String(NODE_H / 2 + 5));
 
-      ensureBadge(gEl, "badge-head", "HEAD", 8, 14, HEAD_COLOR, isHead, "start");
-      ensureBadge(gEl, "badge-tail", "TAIL", NODE_W - 8, 14, TAIL_COLOR, isTail, "end");
-
-      ensureBadge(gEl, "badge-root", "ROOT", NODE_W / 2, 14, ROOT_COLOR, isRoot, "middle");
+      ensureBadge(gEl, "head", "HEAD", 8, 14, isHead, "start");
+      ensureBadge(gEl, "tail", "TAIL", NODE_W - 8, 14, isTail, "end");
+      ensureBadge(gEl, "root", "ROOT", NODE_W / 2, 14, isRoot, "middle");
     });
 
     [...this.nodeMap.keys()].forEach(id => {
@@ -217,7 +257,6 @@ export class SvgRenderer {
 
         this.svg.insertBefore(path, this.svg.firstChild);
       });
-
       return;
     }
 
