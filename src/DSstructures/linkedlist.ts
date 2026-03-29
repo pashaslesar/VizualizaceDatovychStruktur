@@ -1,5 +1,5 @@
 import { Timeline } from "../core/Timeline";
-import { SvgRenderer } from "../render/SvgRenderer";
+import { LinkedListRenderer } from "../render/LinkedListRenderer";
 import { LinkedListOperations } from "../DSoperations/LinkedListOperations";
 
 const svg        = document.querySelector<SVGSVGElement>("#stage")!;
@@ -22,7 +22,7 @@ const btnFindValue   = document.querySelector<HTMLButtonElement>("#btnFindValue"
 const btnRandom      = document.querySelector<HTMLButtonElement>("#btnRandom")!;
 const btnClear       = document.querySelector<HTMLButtonElement>("#btnClear")!;
 
-const renderer = new SvgRenderer(svg);
+const renderer = new LinkedListRenderer(svg);
 const timeline = new Timeline(
   (f, idx, total) => {
     renderer.render(f);

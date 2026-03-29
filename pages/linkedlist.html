@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vizualizace struktur</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="layout.css" />
   </head>
   <body class="ll-page">
     <nav class="navbar navbar-compact">
@@ -21,45 +22,47 @@
     </nav>
 
     <main class="container-wide ll-layout">
-      <aside class="ll-sidebar">
-        <h2>Operace</h2>
+      <div class="ll-sidebar-col">
+        <aside class="ll-sidebar">
+          <h2>Operace</h2>
 
-        <div class="group">
-          <label class="lbl" for="valInput">Hodnota</label>
-          <input id="valInput" type="number" value="10" class="inp"/>
-        </div>
+          <div class="group">
+            <label class="lbl" for="valInput">Hodnota</label>
+            <input id="valInput" type="number" value="10" class="inp"/>
+          </div>
 
-        <div class="group">
-          <label class="lbl" for="listType">Typ seznamu</label>
-          <select id="listType" class="inp">
-            <option value="singly">Jednosměrný</option>
-            <option value="doubly">Dvousměrný</option>
-            <option value="doubly-cyclic">Dvousměrný cyklický</option>
-          </select>
-        </div>
+          <div class="group">
+            <label class="lbl" for="listType">Typ seznamu</label>
+            <select id="listType" class="inp">
+              <option value="singly">Jednosměrný</option>
+              <option value="doubly">Dvousměrný</option>
+              <option value="doubly-cyclic">Dvousměrný cyklický</option>
+            </select>
+          </div>
 
-        <div class="group">
-          <button id="btnInsertHead"  class="btn primary full">Vložit na začátek</button>
-          <button id="btnInsertTail"  class="btn full">Vložit na konec</button>
-        </div>
+          <div class="group">
+            <button id="btnInsertHead"  class="btn primary full">Vložit na začátek</button>
+            <button id="btnInsertTail"  class="btn full">Vložit na konec</button>
+          </div>
 
-        <div class="group">
-          <button id="btnDeleteHead" class="btn full">Odstranit začátek</button>
-          <button id="btnDeleteTail" class="btn full">Odstranit konec</button>
-        </div>
+          <div class="group">
+            <button id="btnDeleteHead" class="btn full">Odstranit začátek</button>
+            <button id="btnDeleteTail" class="btn full">Odstranit konec</button>
+          </div>
 
-        <div class="group">
-          <button id="btnDeleteValue" class="btn full">Odstranit hodnotu</button>
-          <button id="btnFindValue"   class="btn full">Najít hodnotu</button>
-        </div>
+          <div class="group">
+            <button id="btnDeleteValue" class="btn full">Odstranit hodnotu</button>
+            <button id="btnFindValue"   class="btn full">Najít hodnotu</button>
+          </div>
 
-        <div class="group">
-          <button id="btnRandom" class="btn full">Náhodný seznam</button>
-          <button id="btnClear"  class="btn full">Vyčistit seznam</button>
-        </div>
+          <div class="group">
+            <button id="btnRandom" class="btn full">Náhodný seznam</button>
+            <button id="btnClear"  class="btn full">Vyčistit seznam</button>
+          </div>
 
-        <p class="hint">Tip: Enter - provést poslední operaci</p>
-      </aside>
+          <p class="hint">Tip: Enter - provést poslední operaci</p>
+        </aside>
+      </div>
 
       <section class="ll-stage">
         <div class="stage-wrap">

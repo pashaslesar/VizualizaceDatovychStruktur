@@ -66,13 +66,11 @@ export class LinkedListOperations {
         "Poslední ukazuje na nový uzel"
       );
 
-      const afterVals = [...this.values, value];
+      this.values = [...this.values, value];
 
-      const after = this.layout(afterVals, [...before, newNode]);
+      const after = this.layout(this.values, [...before, newNode]);
       after.forEach(n => (n.highlight = false));
       const f4 = this.frame(after, this.edges(after), "Nový uzel se stává koncem");
-
-      this.values = afterVals;
 
       return [f1, f2, f3, f4];
     } else {
@@ -222,9 +220,10 @@ export class LinkedListOperations {
       n.isTail = false;
     });
 
-    if (nn.length > 0) {
-      nn[0].isHead = true;
-      nn[nn.length - 1].isTail = true;
+    const listNodes = nn.filter(n => this.values.includes(n.value));
+    if (listNodes.length > 0) {
+      listNodes[0].isHead = true;
+      listNodes[listNodes.length - 1].isTail = true;
     }
 
     return {

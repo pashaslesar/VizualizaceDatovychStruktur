@@ -1,5 +1,5 @@
 import { Timeline } from "../core/Timeline";
-import { SvgRenderer } from "../render/SvgRenderer";
+import { BstRenderer } from "../render/BstRenderer";
 import { BstOperations } from "../DSoperations/BstOperations";
 
 const svg        = document.querySelector<SVGSVGElement>("#stage")!;
@@ -36,7 +36,7 @@ function setTraversalOrder(values: number[]) {
     traversalText.textContent = values.length ? values.join(", ") : "—";
 }
 
-const renderer = new SvgRenderer(svg);
+const renderer = new BstRenderer(svg);
 const timeline = new Timeline(
     (f, idx, total) => {
         renderer.render(f);

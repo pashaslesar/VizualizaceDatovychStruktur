@@ -1,5 +1,5 @@
 import { Timeline } from "../core/Timeline";
-import { SvgRenderer } from "../render/SvgRenderer";
+import { ArrayRenderer } from "../render/ArrayRenderer";
 import { ArrayOperations } from "../DSoperations/ArrayOperations";
 import type { Frame } from "../core/types";
 
@@ -39,7 +39,7 @@ const btnClear = document.querySelector<HTMLButtonElement>("#btnClear")!;
 const btnDeleteArray = document.querySelector<HTMLButtonElement>("#btnDeleteArray")!;
 const btnCreateArray = document.querySelector<HTMLButtonElement>("#btnCreateArray")!;
 
-const renderer = new SvgRenderer(svg);
+const renderer = new ArrayRenderer(svg);
 
 const timeline = new Timeline(
     (f: any, idx, total) => {
