@@ -9,7 +9,7 @@ let NEXT_ID = 1;
 
 export class QueueOperations {
     private items: QueueItem[] = [];
-    private readonly maxSize = 8;
+    private readonly maxSize = 7;
 
     snapshot(): Frame {
         const nodes = this.layout(this.items);
@@ -70,13 +70,6 @@ export class QueueOperations {
             return frames;
         }
 
-        const ghostNodes = this.layout(this.items, {
-            ghostValue: value,
-            ghostAtRear: true,
-        });
-        const ghostEdges = this.edges(ghostNodes);
-        frames.push(this.frame(ghostNodes, ghostEdges, `Připraven enqueue(${value})`));
-
         this.items.push({
             id: NEXT_ID++,
             value,
@@ -113,14 +106,6 @@ export class QueueOperations {
             highlightIndex: 0,
         });
         frames.push(this.frame(highlighted, this.edges(highlighted), "Odebírám prvek z čela fronty"));
-
-        const ghostOut = this.layout(this.items, {
-            highlightIndex: 0,
-            ghostValue: removed.value,
-            ghostAtFront: true,
-            hideRealFront: true,
-        });
-        frames.push(this.frame(ghostOut, this.edges(ghostOut), `${removed.value} opouští frontu`));
 
         this.items.shift();
 
@@ -196,13 +181,7 @@ export class QueueOperations {
 
     private layout(
         items: QueueItem[],
-        opts?: {
-            highlightIndex?: number;
-            ghostValue?: number;
-            ghostAtRear?: boolean;
-            ghostAtFront?: boolean;
-            hideRealFront?: boolean;
-        }
+        opts?: { highlightIndex?: number }
     ): NodeState[] {
         const nodes: NodeState[] = [];
         const step = 150;
@@ -210,8 +189,6 @@ export class QueueOperations {
         const y = 300;
 
         for (let i = 0; i < items.length; i++) {
-            if (opts?.hideRealFront && i === 0) continue;
-
             nodes.push({
                 id: items[i].id,
                 value: items[i].value,
@@ -221,27 +198,6 @@ export class QueueOperations {
                 isFront: i === 0,
                 isRear: i === items.length - 1,
                 index: i,
-            } as NodeState);
-        }
-
-        if (opts?.ghostValue !== undefined) {
-            let ghostX = startX;
-
-            if (opts.ghostAtRear) {
-                ghostX = startX + items.length * step;
-            } else if (opts.ghostAtFront) {
-                ghostX = startX - step;
-            }
-
-            nodes.push({
-                id: 100000 + NEXT_ID++,
-                value: opts.ghostValue,
-                x: ghostX,
-                y,
-                highlight: true,
-                isGhost: true,
-                isFront: false,
-                isRear: false,
             } as NodeState);
         }
 

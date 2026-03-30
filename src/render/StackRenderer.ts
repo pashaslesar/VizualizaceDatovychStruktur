@@ -13,10 +13,8 @@ export class StackRenderer extends BaseSvgRenderer {
         return this.indexLayer;
     }
 
-    // Draw index labels at current nodeMap positions (works during lerp too)
     private drawIndices(nodes: NodeState[]) {
         const layer = this.getIndexLayer();
-        // Re-append to end so it renders on top of all node groups
         this.svg.appendChild(layer);
         while (layer.firstChild) layer.removeChild(layer.firstChild);
 
@@ -54,7 +52,6 @@ export class StackRenderer extends BaseSvgRenderer {
 
     override renderLerp(a: Frame, b: Frame, t: number) {
         super.renderLerp(a, b, t);
-        // Use b.nodes for id/isGhost info; positions are read from live nodeMap transforms
         this.drawIndices(b.nodes);
     }
 

@@ -2,7 +2,7 @@ import type { Frame, NodeState } from "../core/types";
 import { BaseSvgRenderer, setStyleVar, NODE_W, NODE_H } from "./base/BaseSvgRenderer";
 import type { BadgeSpec } from "./base/BaseSvgRenderer";
 
-const QUEUE_COLOR = "#729969";
+const QUEUE_COLOR = "var(--primary)";
 
 export class QueueRenderer extends BaseSvgRenderer {
     private indexLayer: SVGGElement | null = null;
@@ -17,7 +17,7 @@ export class QueueRenderer extends BaseSvgRenderer {
 
     private drawIndices(nodes: NodeState[]) {
         const layer = this.getIndexLayer();
-        this.svg.appendChild(layer); // keep on top
+        this.svg.appendChild(layer);
         while (layer.firstChild) layer.removeChild(layer.firstChild);
 
         nodes
@@ -63,18 +63,15 @@ export class QueueRenderer extends BaseSvgRenderer {
     ): void {
         const isFront = !!(n as any).isFront;
         const isRear = !!(n as any).isRear;
-        const isGhost = !!(n as any).isGhost;
 
         const stroke =
-            isGhost ? "#ff5c5c" :
             n.highlight ? "var(--hl-stroke)" :
             (isFront || isRear) ? QUEUE_COLOR :
             "#2a2f3a";
 
         const fill =
-            isGhost ? "rgba(255, 92, 92, 0.12)" :
             n.highlight ? "var(--hl-fill)" :
-            (isFront || isRear) ? "rgba(114, 153, 105, 0.18)" :
+            (isFront || isRear) ? "var(--hl-fill)" :
             "#1d2129";
 
         setStyleVar(rectEl, "stroke", stroke);
@@ -93,7 +90,7 @@ export class QueueRenderer extends BaseSvgRenderer {
                 y: 14,
                 visible: isFront,
                 anchor: "middle",
-                fill: "rgba(114, 153, 105, 0.18)",
+                fill: "var(--hl-fill)",
                 stroke: QUEUE_COLOR,
                 textFill: QUEUE_COLOR,
             },
@@ -104,7 +101,7 @@ export class QueueRenderer extends BaseSvgRenderer {
                 y: NODE_H - 6,
                 visible: isRear,
                 anchor: "middle",
-                fill: "rgba(114, 153, 105, 0.18)",
+                fill: "var(--hl-fill)",
                 stroke: QUEUE_COLOR,
                 textFill: QUEUE_COLOR,
             },

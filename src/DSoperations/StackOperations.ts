@@ -104,7 +104,6 @@ export class StackOperations {
 
         const removedValue = this.values[topIndex];
 
-        // ghost stays at TOP position (hideRealTop + ghostAtTopPos)
         const ghostInPlace = this.layout(this.values, {
             ghostValue: removedValue,
             ghostAtTopPos: true,

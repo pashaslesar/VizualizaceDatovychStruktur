@@ -18,7 +18,7 @@ body.theme-green .ll-page .player .speed input[type="range"]::-moz-range-thumb {
 @keyframes stackLimitBlink {
   0%,  50%, 100% { border-color: var(--border); box-shadow: var(--shadow); }
   25%, 75%       { border-color: var(--accent, var(--primary));
-                   box-shadow: 0 0 0 3px rgba(57, 217, 138, .20), var(--shadow); }
+  box-shadow: 0 0 0 3px rgba(57, 217, 138, .20), var(--shadow); }
 }
 
 .ll-page .ll-note.blink-limit {

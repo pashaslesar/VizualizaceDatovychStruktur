@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Queue - Vizualizace struktur</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="layout.css"/>
+    <link rel="stylesheet" href="queue.css"/>
+</head>
+
+<body class="ll-page theme-orange">
+    <nav class="navbar navbar-compact">
+        <div class="nav-left">
+            <a class="brand" href="/">VISUAL DS</a>
+        </div>
+
+        <div class="nav-center">
+            <h1 class="navbar-title">Queue - vizualizace</h1>
+            <span id="stepInfo" class="nav-step muted"></span>
+        </div>
+
+        <div class="nav-right">
+            <a class="btn ghost" href="/">← Na hlavní</a>
+        </div>
+    </nav>
+
+    <main class="container-wide ll-layout">
+        <div class="ll-sidebar-col">
+            <aside class="ll-sidebar">
+                <h2>Operace</h2>
+
+                <div class="group">
+                    <label class="lbl" for="valueInput">Hodnota</label>
+                    <input id="valueInput" type="number" value="10" class="inp"/>
+                </div>
+
+                <div class="group">
+                    <button id="enqueueBtn" class="btn primary full">Enqueue</button>
+                    <button id="dequeueBtn" class="btn full">Dequeue</button>
+                    <button id="peekBtn" class="btn full">Peek (Front)</button>
+                </div>
+
+                <div class="group">
+                    <button id="randomBtn" class="btn full">Náhodná fronta</button>
+                    <button id="resetBtn" class="btn full">Vyčistit frontu</button>
+                </div>
+
+                <p class="hint">Tip: Enter - provést poslední operaci</p>
+            </aside>
+
+            <aside class="ll-note" aria-live="polite">
+                <div class="ll-note__title">Aktuální krok</div>
+                <div class="ll-note__text">
+                    <span id="stepLabel" class="ll-traversal">Snapshot</span>
+                </div>
+            </aside>
+
+            <aside id="queueLimitBox" class="ll-note" aria-live="polite">
+                <div class="ll-note__title">Omezení vizualizace</div>
+                <div class="ll-note__text">
+                    Maximální velikost fronty je <strong>7 prvků</strong>.
+                    Pokud by Enqueue přesáhl limit, operace se neprovede.
+                </div>
+            </aside>
+        </div>
+
+        <section class="ll-stage">
+            <div class="stage-wrap">
+                <svg id="stage" viewBox="0 0 1600 600" preserveAspectRatio="xMidYMid meet"></svg>
+
+                <div class="player">
+                    <button id="prevBtn" class="btn icon" title="Krok zpět">&#x23EE;</button>
+                    <button id="playBtn" class="btn icon" title="Přehrát">&#x25B6;</button>
+                    <button id="pauseBtn" class="btn icon" title="Pauza">&#x23F8;</button>
+                    <button id="nextBtn" class="btn icon" title="Krok vpřed">&#x23ED;</button>
+
+                    <div class="divider"></div>
+
+                    <label class="speed">
+                        <input id="speedRange" type="range" min="120" max="1500" step="60" value="600"/>
+                    </label>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="/src/DSstructures/queue.ts"></script>
+</body>
+</html>
