@@ -274,6 +274,7 @@ export class ArrayOperations {
                 highlight: highlightIndex === i,
                 isHead: i === 0,
                 isTail: i === cap - 1,
+                index: i,
             });
         }
 

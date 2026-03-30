@@ -189,7 +189,6 @@
   background: var(--muted);
 }
 
-/* Firefox */
 .ll-page .ll-stage .stage-wrap{
   scrollbar-width: thin;
   scrollbar-color: var(--border) var(--panel-2);

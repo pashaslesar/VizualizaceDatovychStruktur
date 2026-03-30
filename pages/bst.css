@@ -23,8 +23,7 @@ body.theme-green .bst-hide-listtype{ display:none; }
 
 .ll-traversal{
   display:block;
-  font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-              "Liberation Mono", monospace;
+  font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   letter-spacing:.2px;
   line-height:1.4;
   white-space:normal;

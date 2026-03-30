@@ -8,7 +8,7 @@ export const setStyleVar = (el: SVGElement, prop: string, value: string) => {
     (el as any).style.setProperty(prop, value);
     };
 
-    export type BadgeKey = "head" | "tail" | "root";
+    export type BadgeKey = "head" | "tail" | "root" | "top" | "bottom" | "front" | "rear";
 
     export type BadgeSpec = {
     key: BadgeKey;
@@ -58,8 +58,15 @@ export const setStyleVar = (el: SVGElement, prop: string, value: string) => {
                     isHead: t < 0.5 ? na.isHead : nb.isHead,
                     isTail: t < 0.5 ? na.isTail : nb.isTail,
 
-                    isRoot: t < 0.5 ? (na as any).isRoot : (nb as any).isRoot,
+                    isTop:    t < 0.5 ? (na as any).isTop    : (nb as any).isTop,
+                    isBottom: t < 0.5 ? (na as any).isBottom : (nb as any).isBottom,
+
+                    isFront: t < 0.5 ? (na as any).isFront : (nb as any).isFront,
+                    isRear:  t < 0.5 ? (na as any).isRear  : (nb as any).isRear,
+
+                    isRoot:  t < 0.5 ? (na as any).isRoot  : (nb as any).isRoot,
                     isGhost: t < 0.5 ? (na as any).isGhost : (nb as any).isGhost,
+                    index:   nb.index ?? na.index,
 
                     badgeHead: t < 0.5 ? (na as any).badgeHead : (nb as any).badgeHead,
                     badgeTail: t < 0.5 ? (na as any).badgeTail : (nb as any).badgeTail,
@@ -156,7 +163,7 @@ export const setStyleVar = (el: SVGElement, prop: string, value: string) => {
     }
 
     protected syncBadges(host: SVGGElement, specs: BadgeSpec[]) {
-        (["head", "tail", "root"] as BadgeKey[]).forEach(k => {
+        (["head", "tail", "root", "top", "bottom", "front", "rear"] as BadgeKey[]).forEach(k => {
         const bg = host.querySelector(`g[data-badge="${k}"]`) as SVGGElement | null;
         if (bg) bg.style.display = "none";
         });
@@ -268,7 +275,7 @@ export const setStyleVar = (el: SVGElement, prop: string, value: string) => {
         return;
         }
 
-        if (layout === "line") {
+        if (layout === "line" || layout === "stack") {
         const moveToward = (ax: number, ay: number, bx: number, by: number, dist: number) => {
             const vx = bx - ax, vy = by - ay;
             const len = Math.hypot(vx, vy) || 1;
