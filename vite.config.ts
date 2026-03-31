@@ -15,8 +15,6 @@ export default defineConfig(({ mode }) => ({
         linkedlist: resolve(__dirname, 'pages/linkedlist.html'),
         stack:      resolve(__dirname, 'pages/stack.html'),
         queue:      resolve(__dirname, 'pages/queue.html'),
-        graph:      resolve(__dirname, 'pages/graph.html'),
-        heap:       resolve(__dirname, 'pages/heap.html'),
         array:      resolve(__dirname, 'pages/array.html'),
         BST:        resolve(__dirname, 'pages/BST.html'),
       },
