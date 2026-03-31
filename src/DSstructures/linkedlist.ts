@@ -4,6 +4,7 @@ import { LinkedListOperations } from "../DSoperations/LinkedListOperations";
 
 const svg        = document.querySelector<SVGSVGElement>("#stage")!;
 const stepInfo   = document.querySelector<HTMLSpanElement>("#stepInfo")!;
+const stepLabel  = document.querySelector<HTMLSpanElement>("#stepLabel")!;
 
 const btnNext    = document.querySelector<HTMLButtonElement>("#btnNext")!;
 const btnPrev    = document.querySelector<HTMLButtonElement>("#btnPrev")!;
@@ -27,6 +28,7 @@ const timeline = new Timeline(
   (f, idx, total) => {
     renderer.render(f);
     stepInfo.textContent = `Krok ${idx + 1}/${total}` + (f.label ? ` • ${f.label}` : "");
+    stepLabel.textContent = f.label ?? "";
   },
   (a, b, t) => renderer.renderLerp(a, b, t)
 );
