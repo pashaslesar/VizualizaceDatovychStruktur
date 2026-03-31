@@ -74,17 +74,23 @@ vizualizace/
 ├── vite.config.ts                # Vite konfigurace, multi-page build
 ├── tsconfig.json
 │
-├── pages/                        # HTML stránky + CSS pro každou strukturu
-│   ├── styles.css                # Globální téma (dark mode, barvy, tlačítka)
-│   ├── layout.css                # Layout sidebar + stage, player ovládání, zoom
+├── pages/                        # HTML stránky každé struktury
 │   ├── linkedlist.html
-│   ├── stack.html / stack.css    # Zelená téma
-│   ├── queue.html / queue.css    # Žlutá téma
-│   ├── array.html / array.css    # Žlutá téma
-│   └── BST.html / bst.css        # Zelená téma
+│   ├── stack.html
+│   ├── queue.html
+│   ├── array.html
+│   ├── BST.html
+│   │
+│   └── css/                      # Styly oddělené od HTML
+│       ├── styles.css            # Globální téma (dark mode, barvy, tlačítka)
+│       ├── layout.css            # Layout sidebar + stage, player ovládání, zoom
+│       ├── stack.css             # Zelená téma
+│       ├── queue.css             # Oranžová téma + animace blikání
+│       ├── array.css             # Oranžová téma + animace blikání
+│       └── bst.css               # Zelená téma
 │
 └── src/
-    ├── home.ts                   # Hledání karet na hlavní stránce (název / štítky)
+    ├── home.ts                   # Filtrování karet na hlavní stránce (název / štítky)
     │
     ├── core/
     │   ├── types.ts              # NodeState, EdgeState, Frame, LayoutType
@@ -135,7 +141,7 @@ push(value: number): Frame[] {
 `BaseSvgRenderer` obsahuje generický systém pro zobrazení textových odznaků (HEAD, TAIL, TOP, BOTTOM, FRONT, REAR, ROOT) přímo uvnitř SVG uzlu. Odznaky jsou SVG `<g>` elementy s `<rect>` a `<text>`, jejich viditelnost se mění per-snímek.
 
 ### Zoom
-Modul `zoom.ts` přidá do každé stránky tlačítka `−` / `%` / `+` do ovládacího pruhu. Při přiblížení se nastaví explicitní `width`/`height` na SVG elementu — kontejner má `overflow-x: auto`, takže se zobrazí horizontální scrollbar.
+Modul `zoom.ts` přidá do každé stránky tlačítka `−` / `%` / `+` do ovládacího pruhu. Při přiblížení se nastaví explicitní `width`/`height` na SVG elementu — kontejner má `overflow-x: auto`, takže se zobrazí horizontální scrollbar. Podporuje také klávesové zkratky `Ctrl+/−` a pinch-to-zoom na dotykových zařízeních.
 
 ---
 
