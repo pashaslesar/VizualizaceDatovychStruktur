@@ -31,7 +31,7 @@ export class StackRenderer extends BaseSvgRenderer {
                 const tx = parseFloat(match[1]);
                 const ty = parseFloat(match[2]);
 
-                const idx = n.index ?? (n.id - 1); // 0 = bottom, n-1 = top
+                const idx = n.index ?? (n.id - 1);
 
                 const text = document.createElementNS(this.svg.namespaceURI, "text") as SVGTextElement;
                 text.setAttribute("x", String(tx + NODE_W + 12));

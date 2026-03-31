@@ -1,6 +1,7 @@
 import { Timeline } from "../core/Timeline";
 import { LinkedListRenderer } from "../render/LinkedListRenderer";
 import { LinkedListOperations } from "../DSoperations/LinkedListOperations";
+import { setupZoom } from "../core/zoom";
 
 const svg        = document.querySelector<SVGSVGElement>("#stage")!;
 const stepInfo   = document.querySelector<HTMLSpanElement>("#stepInfo")!;
@@ -24,6 +25,7 @@ const btnRandom      = document.querySelector<HTMLButtonElement>("#btnRandom")!;
 const btnClear       = document.querySelector<HTMLButtonElement>("#btnClear")!;
 
 const renderer = new LinkedListRenderer(svg);
+setupZoom(svg);
 const timeline = new Timeline(
   (f, idx, total) => {
     renderer.render(f);

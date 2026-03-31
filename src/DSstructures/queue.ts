@@ -1,6 +1,7 @@
 import { Timeline } from "../core/Timeline";
 import { QueueOperations } from "../DSoperations/QueueOperations";
 import { QueueRenderer } from "../render/QueueRenderer";
+import { setupZoom } from "../core/zoom";
 
 const svg        = document.querySelector<SVGSVGElement>("#stage")!;
 const stepInfo   = document.querySelector<HTMLSpanElement>("#stepInfo")!;
@@ -30,6 +31,7 @@ function blinkLimitBox() {
 
 const ops      = new QueueOperations();
 const renderer = new QueueRenderer(svg);
+setupZoom(svg);
 
 const timeline = new Timeline(
     (f, idx, total) => {

@@ -38,9 +38,9 @@ export class LinkedListRenderer extends BaseSvgRenderer {
 
         return [
             { key: "head" as const, text: "HEAD", x: 8,          y: 14, visible: showHead, anchor: "start" as const,
-              fill: "var(--hl-fill)", stroke: "var(--hl-stroke)", textFill: "var(--hl-stroke)" },
+                fill: "var(--hl-fill)", stroke: "var(--hl-stroke)", textFill: "var(--hl-stroke)" },
             { key: "tail" as const, text: "TAIL", x: NODE_W - 8, y: 14, visible: showTail, anchor: "end" as const,
-              fill: "var(--hl-fill)", stroke: "var(--hl-stroke)", textFill: "var(--hl-stroke)" },
+                fill: "var(--hl-fill)", stroke: "var(--hl-stroke)", textFill: "var(--hl-stroke)" },
         ];
     }
 }

@@ -1,6 +1,7 @@
 import { Timeline } from "../core/Timeline";
 import { BstRenderer } from "../render/BstRenderer";
 import { BstOperations } from "../DSoperations/BstOperations";
+import { setupZoom } from "../core/zoom";
 
 const svg        = document.querySelector<SVGSVGElement>("#stage")!;
 const stepInfo   = document.querySelector<HTMLSpanElement>("#stepInfo")!;
@@ -38,6 +39,7 @@ function setTraversalOrder(values: number[]) {
 }
 
 const renderer = new BstRenderer(svg);
+setupZoom(svg);
 const timeline = new Timeline(
     (f, idx, total) => {
         renderer.render(f);

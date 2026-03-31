@@ -1,6 +1,7 @@
 import { Timeline } from "../core/Timeline";
 import { StackOperations } from "../DSoperations/StackOperations";
 import { StackRenderer } from "../render/StackRenderer";
+import { setupZoom } from "../core/zoom";
 
 const svg        = document.querySelector<SVGSVGElement>("#stage")!;
 const stepInfo   = document.querySelector<HTMLSpanElement>("#stepInfo")!;
@@ -31,6 +32,7 @@ function blinkLimitBox() {
 
 const ops      = new StackOperations();
 const renderer = new StackRenderer(svg);
+setupZoom(svg);
 
 const timeline = new Timeline(
     (f, idx, total) => {

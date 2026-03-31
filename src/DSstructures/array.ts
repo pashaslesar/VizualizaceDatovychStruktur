@@ -2,6 +2,7 @@ import { Timeline } from "../core/Timeline";
 import { ArrayRenderer } from "../render/ArrayRenderer";
 import { ArrayOperations } from "../DSoperations/ArrayOperations";
 import type { Frame } from "../core/types";
+import { setupZoom } from "../core/zoom";
 
 const arrayCapText = document.querySelector<HTMLSpanElement>("#arrayCapText")!;
 const arraySizeText = document.querySelector<HTMLSpanElement>("#arraySizeText")!;
@@ -41,6 +42,7 @@ const btnDeleteArray = document.querySelector<HTMLButtonElement>("#btnDeleteArra
 const btnCreateArray = document.querySelector<HTMLButtonElement>("#btnCreateArray")!;
 
 const renderer = new ArrayRenderer(svg);
+setupZoom(svg);
 
 const timeline = new Timeline(
     (f: any, idx, total) => {
