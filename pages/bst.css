@@ -1,31 +1,38 @@
-body.theme-green{
-  --primary:   #39d98a;
+body.theme-green {
+  --primary: #39d98a;
   --hl-stroke: rgba(98, 233, 157, 0.747);
-  --hl-fill:   rgba(98, 233, 156, 0.164);
+  --hl-fill: rgba(98, 233, 156, 0.164);
 }
 
-body.theme-green .ll-page .player .speed input[type="range"]::-webkit-slider-thumb{
-  background:var(--primary);
-  box-shadow:0 0 0 3px rgba(57, 217, 138, 0.2);
+body.theme-green .ll-page .player .speed input[type="range"]::-webkit-slider-thumb {
+  background: var(--primary);
+  box-shadow: 0 0 0 3px rgba(57, 217, 138, 0.2);
 }
 
-body.theme-green .bst-hide-listtype{ display:none; }
+body.theme-green .bst-hide-listtype {
+  display: none;
+}
 
 @keyframes bstLimitBlink {
-  0%,  50%, 100% { border-color:var(--border); box-shadow:var(--shadow); }
-  25%, 75%       { border-color:var(--accent, var(--green));
-  box-shadow:0 0 0 3px rgba(57, 217, 138, .20), var(--shadow); }
+  0%,  50%, 100% {
+    border-color:var(--border);
+    box-shadow: var(--shadow);
+  }
+  25%, 75% {
+    border-color: var(--accent, var(--green));
+    box-shadow: 0 0 0 3px rgba(57, 217, 138, .20), var(--shadow);
+  }
 }
 
-.ll-page .ll-note.blink-limit{
-  animation:bstLimitBlink 700ms ease-in-out;
+.ll-page .ll-note.blink-limit {
+  animation: bstLimitBlink 700ms ease-in-out;
 }
 
-.ll-traversal{
-  display:block;
-  font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  letter-spacing:.2px;
-  line-height:1.4;
-  white-space:normal;
-  word-break:break-word;
+.ll-traversal {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  letter-spacing: .2px;
+  line-height: 1.4;
+  white-space: normal;
+  word-break: break-word;
 }

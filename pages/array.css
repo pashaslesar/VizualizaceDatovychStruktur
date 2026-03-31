@@ -1,21 +1,26 @@
-body.theme-orange{
-  --primary:       #ffb64d;
-  --hl-stroke:     rgba(255, 182, 77, 0.95);
-  --hl-fill:       rgba(255, 182, 77, 0.16);
+body.theme-orange {
+  --primary: #ffb64d;
+  --hl-stroke: rgba(255, 182, 77, 0.95);
+  --hl-fill: rgba(255, 182, 77, 0.16);
   --array-tag-text: rgba(255, 214, 140, 0.95);
 }
 
-body.theme-orange .ll-page .player .speed input[type="range"]::-webkit-slider-thumb{
-  background:var(--primary);
-  box-shadow:0 0 0 3px rgba(255, 182, 77, 0.2);
+body.theme-orange .ll-page .player .speed input[type="range"]::-webkit-slider-thumb {
+  background: var(--primary);
+  box-shadow: 0 0 0 3px rgba(255, 182, 77, 0.2);
 }
 
 @keyframes arrayLimitBlink {
-  0%,  50%, 100% { border-color:var(--border); box-shadow:var(--shadow); }
-  25%, 75%       { border-color:var(--orange);
-  box-shadow:0 0 0 3px rgba(255,182,77,.35), var(--shadow); }
+  0%,  50%, 100% {
+    border-color:var(--border);
+    box-shadow:var(--shadow);
+  }
+  25%, 75% {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(255,182,77,.35), var(--shadow);
+  }
 }
 
-.ll-note.blink-array-limit{
-  animation:arrayLimitBlink 700ms ease-in-out;
+.ll-note.blink-array-limit {
+  animation: arrayLimitBlink 700ms ease-in-out;
 }
