@@ -89,11 +89,25 @@ export class LinkedListOperations {
     before[0].highlight = true;
     const f2 = this.frame(before, this.edges(before), "Označení hlavy");
 
-    this.values = this.values.slice(1);
-    const after = this.layout(this.values);
-    const f3 = this.frame(after, this.edges(after), "Nová hlava");
+    const removedValue = this.values[0];
+    const head = before[0];
+    const ghostNode: NodeState = {
+      id: 100000 + NEXT_ID++,
+      value: removedValue,
+      x: head.x,
+      y: head.y,
+      isGhost: true,
+      highlight: true,
+    };
+    const survivors = before.slice(1);
+    survivors.forEach(n => (n.highlight = false));
+    const f3 = this.frame([ghostNode, ...survivors], this.edges(survivors), `${removedValue} opouští seznam`);
 
-    return [f1, f2, f3];
+    this.values = this.values.slice(1);
+    const after = this.layout(this.values, before);
+    const f4 = this.frame(after, this.edges(after), "Nová hlava");
+
+    return [f1, f2, f3, f4];
   }
 
   deleteTail(): Frame[] {
@@ -104,11 +118,25 @@ export class LinkedListOperations {
     before[before.length - 1].highlight = true;
     const f2 = this.frame(before, this.edges(before), "Označení konce");
 
-    this.values = this.values.slice(0, -1);
-    const after = this.layout(this.values);
-    const f3 = this.frame(after, this.edges(after), "Nový konec");
+    const removedValue = this.values[this.values.length - 1];
+    const tail = before[before.length - 1];
+    const ghostNode: NodeState = {
+      id: 100000 + NEXT_ID++,
+      value: removedValue,
+      x: tail.x,
+      y: tail.y,
+      isGhost: true,
+      highlight: true,
+    };
+    const survivors = before.slice(0, -1);
+    survivors.forEach(n => (n.highlight = false));
+    const f3 = this.frame([...survivors, ghostNode], this.edges(survivors), `${removedValue} opouští seznam`);
 
-    return [f1, f2, f3];
+    this.values = this.values.slice(0, -1);
+    const after = this.layout(this.values, before);
+    const f4 = this.frame(after, this.edges(after), "Nový konec");
+
+    return [f1, f2, f3, f4];
   }
 
   deleteValue(value: number): Frame[] {
@@ -122,19 +150,31 @@ export class LinkedListOperations {
     before[idx].highlight = true;
     const f2 = this.frame(before, this.edges(before), "Odstraňovaný uzel");
 
+    const removedNode = before[idx];
+    const ghostNode: NodeState = {
+      id: 100000 + NEXT_ID++,
+      value,
+      x: removedNode.x,
+      y: removedNode.y,
+      isGhost: true,
+      highlight: true,
+    };
+    const ghostFrameNodes = before.map((n, i) => (i === idx ? ghostNode : { ...n, highlight: false }));
+    const f3 = this.frame(ghostFrameNodes, this.edges(before), `${value} opouští seznam`);
+
     const afterVals = this.values.filter(v => v !== value);
 
     const frozenNodes = this.freezeLayoutFrom(before, afterVals);
-    const f3 = this.frame(frozenNodes, this.edges(before), "Uzel zmizí");
+    const f4 = this.frame(frozenNodes, this.edges(before), "Uzel odstraněn");
 
     const bridgedEdges = this.edgesAfterRemove(before, value);
-    const f4 = this.frame(frozenNodes, bridgedEdges, "Přesměrování ukazatelů");
+    const f5 = this.frame(frozenNodes, bridgedEdges, "Přesměrování ukazatelů");
 
     this.values = afterVals;
     const aligned = this.layout(this.values, frozenNodes);
-    const f5 = this.frame(aligned, this.edges(aligned), "Seznam vyrovnán");
+    const f6 = this.frame(aligned, this.edges(aligned), "Seznam vyrovnán");
 
-    return [f1, f2, f3, f4, f5];
+    return [f1, f2, f3, f4, f5, f6];
   }
 
   findValue(value: number): Frame[] {
