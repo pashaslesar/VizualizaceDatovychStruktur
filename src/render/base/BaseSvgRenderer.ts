@@ -249,6 +249,14 @@ export const setStyleVar = (el: SVGElement, prop: string, value: string) => {
         const key = (a: number, b: number) => `${a}->${b}`;
         const edgeSet = new Set(edges.map(e => key(e.from, e.to)));
 
+        const offsetPerp = (ax: number, ay: number, bx: number, by: number, amount: number) => {
+            const vx = bx - ax, vy = by - ay;
+            const len = Math.hypot(vx, vy) || 1;
+            const nx = -vy / len;
+            const ny = vx / len;
+            return { x: nx * amount, y: ny * amount };
+        };
+
         this.ensureMarker();
 
         if (layout === "tree") {
@@ -281,14 +289,6 @@ export const setStyleVar = (el: SVGElement, prop: string, value: string) => {
             const len = Math.hypot(vx, vy) || 1;
             const k = dist / len;
             return { x: ax + vx * k, y: ay + vy * k };
-        };
-
-        const offsetPerp = (ax: number, ay: number, bx: number, by: number, amount: number) => {
-            const vx = bx - ax, vy = by - ay;
-            const len = Math.hypot(vx, vy) || 1;
-            const nx = -vy / len;
-            const ny = vx / len;
-            return { x: nx * amount, y: ny * amount };
         };
 
         edges.forEach(e => {
@@ -331,51 +331,45 @@ export const setStyleVar = (el: SVGElement, prop: string, value: string) => {
         const cx = nodes.reduce((s, n) => s + n.x, 0) / Math.max(1, nodes.length);
         const cy = nodes.reduce((s, n) => s + n.y, 0) / Math.max(1, nodes.length);
 
-        const ang = (p: { x: number; y: number }) => Math.atan2(p.y - cy, p.x - cx);
-
-        const normAngle = (a: number) => {
-        while (a <= -Math.PI) a += 2 * Math.PI;
-        while (a > Math.PI) a -= 2 * Math.PI;
-        return a;
-        };
-
         const shrinkRadial = (p: { x: number; y: number }, dist: number) => {
         const vx = p.x - cx, vy = p.y - cy;
         const len = Math.hypot(vx, vy) || 1;
         return { x: p.x - (vx / len) * dist, y: p.y - (vy / len) * dist };
         };
 
+        const drawnPairs = new Set<string>();
+
         edges.forEach(e => {
         const a = pos.get(e.from), b = pos.get(e.to);
         if (!a || !b) return;
 
-        const a1 = ang(a);
-        const a2 = ang(b);
-        const d = normAngle(a2 - a1);
+        const hasReverse = edgeSet.has(key(e.to, e.from));
+
+        if (hasReverse) {
+            const pairKey = `${Math.min(e.from, e.to)}-${Math.max(e.from, e.to)}`;
+            if (drawnPairs.has(pairKey)) return;
+            drawnPairs.add(pairKey);
+        }
 
         const start = shrinkRadial(a, NODE_W / 2 - 6);
         const end = shrinkRadial(b, NODE_W / 2 + 8);
-
-        const hasReverse = edgeSet.has(key(e.to, e.from));
-        const mid = a1 + d / 2;
-
-        const baseR = Math.hypot(a.x - cx, a.y - cy);
-        const sweep: 0 | 1 = d < 0 ? 1 : 0;
-
-        const bend = hasReverse ? (sweep === 1 ? 80 : -80) : 0;
-
-        const ctrlR = Math.max(60, (baseR - 35) + bend);
-        const ctrlX = cx + ctrlR * Math.cos(mid);
-        const ctrlY = cy + ctrlR * Math.sin(mid);
 
         const path = document.createElementNS(this.svg.namespaceURI, "path");
         path.setAttribute("class", "edge");
         path.setAttribute("fill", "none");
         path.setAttribute("stroke", "#666");
-        path.setAttribute("stroke-width", "1.5");
         path.setAttribute("stroke-linecap", "round");
-        path.setAttribute("marker-end", "url(#arrow)");
-        path.setAttribute("d", `M ${start.x} ${start.y} Q ${ctrlX} ${ctrlY} ${end.x} ${end.y}`);
+
+        if (!hasReverse) {
+            path.setAttribute("stroke-width", "1.5");
+            path.setAttribute("marker-end", "url(#arrow)");
+            path.setAttribute("d", `M ${start.x} ${start.y} L ${end.x} ${end.y}`);
+        } else {
+            path.setAttribute("stroke-width", "2.5");
+            path.setAttribute("marker-start", "url(#arrow)");
+            path.setAttribute("marker-end", "url(#arrow)");
+            path.setAttribute("d", `M ${start.x} ${start.y} L ${end.x} ${end.y}`);
+        }
 
         this.svg.insertBefore(path, this.svg.firstChild);
         });
@@ -387,15 +381,15 @@ export const setStyleVar = (el: SVGElement, prop: string, value: string) => {
         const defs = document.createElementNS(this.svg.namespaceURI, "defs");
         const marker = document.createElementNS(this.svg.namespaceURI, "marker");
         marker.setAttribute("id", "arrow");
-        marker.setAttribute("markerWidth", "8");
+        marker.setAttribute("markerWidth", "6");
         marker.setAttribute("markerHeight", "6");
-        marker.setAttribute("refX", "8");
+        marker.setAttribute("refX", "6");
         marker.setAttribute("refY", "3");
-        marker.setAttribute("orient", "auto");
+        marker.setAttribute("orient", "auto-start-reverse");
         marker.setAttribute("markerUnits", "strokeWidth");
 
         const poly = document.createElementNS(this.svg.namespaceURI, "polygon");
-        poly.setAttribute("points", "0 0, 8 3, 0 6");
+        poly.setAttribute("points", "0 0, 6 3, 0 6");
         poly.setAttribute("fill", "#666");
 
         marker.appendChild(poly);
