@@ -56,19 +56,18 @@ export class QueueOperations {
     }
 
     enqueue(value: number): Frame[] {
-        const frames: Frame[] = [];
-
         const beforeNodes = this.layout(this.items);
         const beforeEdges = this.edges(beforeNodes);
-        frames.push(this.frame(beforeNodes, beforeEdges, "Výchozí stav"));
 
         if (this.items.length >= this.maxSize) {
-            frames.push({
+            return [{
                 ...this.frame(beforeNodes, beforeEdges, `Nelze vložit – fronta je plná (${this.maxSize})`),
                 limitExceeded: true,
-            });
-            return frames;
+            }];
         }
+
+        const frames: Frame[] = [];
+        frames.push(this.frame(beforeNodes, beforeEdges, "Výchozí stav"));
 
         this.items.push({
             id: NEXT_ID++,

@@ -68,7 +68,7 @@ const pushFrames = (frames: any[]) => timeline.append(frames);
 
 function appendWithLimitBlink(frames: any[]) {
     const lastLabel = frames.at(-1)?.label ?? "";
-    if (lastLabel.includes("nelze vložit")) {
+    if (lastLabel.includes("nelze vložit") || lastLabel.includes("již existuje")) {
         blinkLimitBox();
     }
     pushFrames(frames);
@@ -86,7 +86,7 @@ timeline.setOnReachedEnd(() => {
 btnInsert.onclick = () => {
     const frames = bst.insert(num());
     const lastLabel = frames.at(-1)?.label ?? "";
-    pendingLimitBlink = lastLabel.includes("nelze vložit");
+    pendingLimitBlink = lastLabel.includes("nelze vložit") || lastLabel.includes("již existuje");
     timeline.append(frames);
 };
 

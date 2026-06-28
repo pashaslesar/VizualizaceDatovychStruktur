@@ -52,14 +52,14 @@ export class BstOperations {
     }
 
     insert(value: number): Frame[] {
+        if (this.contains(value)) {
+            const nodes = this.layout();
+            return [this.frame(nodes, this.edges(), "Hodnota již existuje – vložení zrušeno")];
+        }
+
         const frames: Frame[] = [];
 
         frames.push(this.frame(this.layout(), this.edges(), "Výchozí stav"));
-
-        if (this.contains(value)) {
-            frames.push(this.frame(this.layout(), this.edges(), "Hodnota již existuje – vložení zrušeno"));
-            return frames;
-        }
 
         const path: BstNode[] = [];
         let cur = this.root;

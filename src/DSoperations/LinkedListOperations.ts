@@ -5,6 +5,7 @@ let NEXT_ID = 1;
 export class LinkedListOperations {
   private values: number[] = [];
   private type: ListType = "singly";
+  private readonly maxSize = 8;
 
   setType(t: ListType) {
     this.type = t;
@@ -18,6 +19,14 @@ export class LinkedListOperations {
     if (this.values.includes(value)) {
       const nodes = this.layout(this.values);
       return [this.frame(nodes, this.edges(nodes), "Hodnota již existuje – vložení zrušeno")];
+    }
+
+    if (this.values.length >= this.maxSize) {
+      const nodes = this.layout(this.values);
+      return [{
+        ...this.frame(nodes, this.edges(nodes), `Nelze vložit – seznam je plný (${this.maxSize})`),
+        limitExceeded: true,
+      }];
     }
 
     const before = this.layout(this.values);
@@ -50,6 +59,14 @@ export class LinkedListOperations {
     if (this.values.includes(value)) {
       const nodes = this.layout(this.values);
       return [this.frame(nodes, this.edges(nodes), "Hodnota již existuje – vložení zrušeno")];
+    }
+
+    if (this.values.length >= this.maxSize) {
+      const nodes = this.layout(this.values);
+      return [{
+        ...this.frame(nodes, this.edges(nodes), `Nelze vložit – seznam je plný (${this.maxSize})`),
+        limitExceeded: true,
+      }];
     }
 
     const before = this.layout(this.values);

@@ -3,7 +3,7 @@ import type { Frame, NodeState, EdgeState } from "../core/types";
 type Cell = number | null;
 
 export class ArrayOperations {
-    private data: Cell[] = [];
+    private values: Cell[] = [];
     private capacity = 8;
 
     constructor() {
@@ -17,7 +17,7 @@ export class ArrayOperations {
         const f1 = this.frame(before, [], "Vytvoření nového pole");
 
         this.capacity = cap;
-        this.data = Array(this.capacity).fill(null);
+        this.values = Array(this.capacity).fill(null);
 
         const after = this.layout();
         const f2 = this.frame(after, [], `Nové pole (kapacita ${this.capacity})`);
@@ -30,7 +30,7 @@ export class ArrayOperations {
         const f1 = this.frame(before, [], "Mazání pole");
 
         this.capacity = 0;
-        this.data = [];
+        this.values = [];
 
         const after = this.layout();
         const f2 = this.frame(after, [], "Pole bylo odstraněno");
@@ -47,7 +47,7 @@ export class ArrayOperations {
         const before = this.layout();
         const f1 = this.frame(before, [], "Před vyčištěním");
 
-        this.data = Array(this.capacity).fill(null);
+        this.values = Array(this.capacity).fill(null);
 
         const after = this.layout();
         const f2 = this.frame(after, [], "Pole vyčištěno");
@@ -66,19 +66,19 @@ export class ArrayOperations {
             return [f1, f2];
         }
 
-        const old = this.data.slice();
+        const old = this.values.slice();
         this.capacity = cap;
 
         if (this.capacity <= 0) {
-            this.data = [];
+            this.values = [];
             const after0 = this.layout();
             const f2 = this.frame(after0, [], "Pole bylo odstraněno");
             return [f1, f2];
         }
 
-        this.data = Array(this.capacity).fill(null);
+        this.values = Array(this.capacity).fill(null);
         for (let i = 0; i < Math.min(old.length, this.capacity); i++) {
-            this.data[i] = old[i];
+            this.values[i] = old[i];
         }
 
         const after = this.layout();
@@ -95,7 +95,7 @@ export class ArrayOperations {
         frames.push(this.frame(this.layout(), [], "Výchozí stav"));
         frames.push(this.frame(this.layout({ highlightIndex: idx }), [], `Index ${idx} vybrán`));
 
-        this.data[idx] = value;
+        this.values[idx] = value;
 
         frames.push(this.frame(this.layout({ highlightIndex: idx }), [], `Nastavení ${value} na index ${idx}`));
         frames.push(this.frame(this.layout(), [], "Hotovo"));
@@ -122,8 +122,8 @@ export class ArrayOperations {
         frames.push(this.frame(this.layout(), [], "Výchozí stav"));
         frames.push(this.frame(this.layout({ highlightIndex: idx }), [], `Vkládáme na index ${idx}`));
 
-        if (this.data[idx] === null) {
-            this.data[idx] = value;
+        if (this.values[idx] === null) {
+            this.values[idx] = value;
             frames.push(this.frame(this.layout({ highlightIndex: idx }), [], `Vloženo ${value} na index ${idx}`));
             frames.push(this.frame(this.layout(), [], "Hotovo"));
             return frames;
@@ -131,7 +131,7 @@ export class ArrayOperations {
 
         let hole = -1;
         for (let i = idx + 1; i < this.capacity; i++) {
-            if (this.data[i] === null) {
+            if (this.values[i] === null) {
                 hole = i;
                 break;
             }
@@ -144,11 +144,11 @@ export class ArrayOperations {
         }
 
         for (let i = hole; i > idx; i--) {
-            this.data[i] = this.data[i - 1];
+            this.values[i] = this.values[i - 1];
             frames.push(this.frame(this.layout({ highlightIndex: i }), [], `Posun: ${i - 1} → ${i}`));
         }
 
-        this.data[idx] = value;
+        this.values[idx] = value;
         frames.push(this.frame(this.layout({ highlightIndex: idx }), [], `Vloženo ${value} na index ${idx}`));
         frames.push(this.frame(this.layout(), [], "Hotovo"));
         return frames;
@@ -164,14 +164,14 @@ export class ArrayOperations {
         frames.push(this.frame(before, [], "Výchozí stav"));
         frames.push(this.frame(this.layout({ highlightIndex: idx }), [], `Odstraňujeme index ${idx}`));
 
-        if (this.data[idx] === null) {
+        if (this.values[idx] === null) {
             frames.push(this.frame(this.layout({ highlightIndex: idx }), [], "Buňka je prázdná — bez změny"));
             frames.push(this.frame(this.layout(), [], "Hotovo"));
             return frames;
         }
 
-        const removed = this.data[idx];
-        this.data[idx] = null;
+        const removed = this.values[idx];
+        this.values[idx] = null;
 
         frames.push(this.frame(this.layout({ highlightIndex: idx }), [], `Odstraněno (${removed})`));
         frames.push(this.frame(this.layout(), [], "Hotovo"));
@@ -188,9 +188,9 @@ export class ArrayOperations {
         const pool = new Set<number>();
         while (pool.size < n) pool.add(Math.floor(Math.random() * 90) + 10);
 
-        this.data = Array(this.capacity).fill(null);
+        this.values = Array(this.capacity).fill(null);
         let i = 0;
-        for (const v of pool) this.data[i++] = v;
+        for (const v of pool) this.values[i++] = v;
 
         const after = this.layout();
         const f2 = this.frame(after, [], `Náhodné pole (${this.capacity})`);
@@ -207,7 +207,7 @@ export class ArrayOperations {
         for (let i = 0; i < this.capacity; i++) {
             frames.push(this.frame(this.layout({ highlightIndex: i }), [], `Kontrola indexu ${i}`));
 
-            if (this.data[i] === value) {
+            if (this.values[i] === value) {
                 frames.push(this.frame(this.layout({ highlightIndex: i }), [], "Nalezeno"));
 
                 for (let k = 0; k < 2; k++) {
@@ -232,7 +232,7 @@ export class ArrayOperations {
 
     private getSize(): number {
         let cnt = 0;
-        for (const v of this.data) if (v !== null) cnt++;
+        for (const v of this.values) if (v !== null) cnt++;
         return cnt;
     }
 
@@ -263,7 +263,7 @@ export class ArrayOperations {
             const nodes: NodeState[] = [];
 
             for (let i = 0; i < cap; i++) {
-            const v = this.data[i];
+            const v = this.values[i];
             const shownValue = v === null ? NaN : v;
 
             nodes.push({

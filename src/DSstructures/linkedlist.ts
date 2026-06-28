@@ -78,13 +78,13 @@ timeline.setOnReachedEnd(() => {
 btnInsertHead.onclick = () => {
   const frames = list.insertHead(num());
   const lastLabel = frames.at(-1)?.label ?? "";
-  pendingLimitBlink = lastLabel.includes("již existuje");
+  pendingLimitBlink = lastLabel.includes("již existuje") || lastLabel.includes("je plný");
   pushFrames(frames);
 };
 btnInsertTail.onclick = () => {
   const frames = list.insertTail(num());
   const lastLabel = frames.at(-1)?.label ?? "";
-  pendingLimitBlink = lastLabel.includes("již existuje");
+  pendingLimitBlink = lastLabel.includes("již existuje") || lastLabel.includes("je plný");
   pushFrames(frames);
 };
 btnDeleteHead.onclick  = () => pushFrames(list.deleteHead());

@@ -50,16 +50,15 @@ export class StackOperations {
         const beforeNodes = this.layout(this.values);
         const beforeEdges = this.edges(beforeNodes);
 
-        const frames: Frame[] = [];
-        frames.push(this.frame(beforeNodes, beforeEdges, "Výchozí stav"));
-
         if (this.values.length >= this.maxSize) {
-            frames.push({
+            return [{
                 ...this.frame(beforeNodes, beforeEdges, `Nelze vložit – zásobník je plný (${this.maxSize})`),
                 limitExceeded: true,
-            });
-            return frames;
+            }];
         }
+
+        const frames: Frame[] = [];
+        frames.push(this.frame(beforeNodes, beforeEdges, "Výchozí stav"));
 
         const ghostNodes = this.layout(this.values, {
             ghostValue: value,
