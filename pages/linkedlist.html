@@ -6,6 +6,7 @@
     <title>Vizualizace struktur</title>
     <link rel="stylesheet" href="css/styles.css"/>
     <link rel="stylesheet" href="css/layout.css"/>
+    <link rel="stylesheet" href="css/linkedlist.css"/>
   </head>
   <body class="ll-page">
     <nav class="navbar navbar-compact">
@@ -67,6 +68,14 @@
           <div class="ll-note__title">Aktuální krok</div>
           <div class="ll-note__text">
             <span id="stepLabel" class="ll-traversal">Snapshot</span>
+          </div>
+        </aside>
+
+        <aside id="llLimitBox" class="ll-note" aria-live="polite">
+          <div class="ll-note__title">Omezení vizualizace</div>
+          <div class="ll-note__text">
+            Seznam nepovoluje <strong>duplicitní hodnoty</strong>.
+            Pokud hodnota v seznamu již existuje, vložení se neprovede.
           </div>
         </aside>
       </div>

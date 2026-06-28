@@ -1,0 +1,23 @@
+@keyframes llLimitBlink {
+  0%,  50%, 100% {
+    border-color: var(--border);
+    box-shadow: var(--shadow);
+  }
+  25%, 75% {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(110, 168, 254, 0.25), var(--shadow);
+  }
+}
+
+.ll-page .ll-note.blink-limit {
+  animation: llLimitBlink 700ms ease-in-out;
+}
+
+.ll-traversal {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+  white-space: normal;
+  word-break: break-word;
+}

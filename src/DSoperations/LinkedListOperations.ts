@@ -142,13 +142,29 @@ export class LinkedListOperations {
   deleteValue(value: number): Frame[] {
     const idx = this.values.indexOf(value);
     const before = this.layout(this.values);
-    if (idx === -1) return [this.frame(before, this.edges(before), "Hodnota nebyla nalezena")];
+    const edges = this.edges(before);
+    const frames: Frame[] = [];
 
-    const f1 = this.frame(before, this.edges(before), "Před odstraněním");
+    const clear = () => before.forEach(n => (n.highlight = false));
 
-    before.forEach(n => (n.highlight = false));
-    before[idx].highlight = true;
-    const f2 = this.frame(before, this.edges(before), "Odstraňovaný uzel");
+    clear();
+    frames.push(this.frame(before, edges, "Hledání hodnoty"));
+
+    for (let i = 0; i < before.length; i++) {
+      clear();
+      before[i].highlight = true;
+      frames.push(this.frame(before, edges, `Kontrola pozice ${i + 1}`));
+
+      if (before[i].value === value) break;
+    }
+
+    if (idx === -1) {
+      clear();
+      frames.push(this.frame(before, edges, "Hodnota nebyla nalezena"));
+      return frames;
+    }
+
+    frames.push(this.frame(before, edges, "Odstraňovaný uzel"));
 
     const removedNode = before[idx];
     const ghostNode: NodeState = {
@@ -160,21 +176,21 @@ export class LinkedListOperations {
       highlight: true,
     };
     const ghostFrameNodes = before.map((n, i) => (i === idx ? ghostNode : { ...n, highlight: false }));
-    const f3 = this.frame(ghostFrameNodes, this.edges(before), `${value} opouští seznam`);
+    frames.push(this.frame(ghostFrameNodes, edges, `${value} opouští seznam`));
 
     const afterVals = this.values.filter(v => v !== value);
 
     const frozenNodes = this.freezeLayoutFrom(before, afterVals);
-    const f4 = this.frame(frozenNodes, this.edges(before), "Uzel odstraněn");
+    frames.push(this.frame(frozenNodes, edges, "Uzel odstraněn"));
 
     const bridgedEdges = this.edgesAfterRemove(before, value);
-    const f5 = this.frame(frozenNodes, bridgedEdges, "Přesměrování ukazatelů");
+    frames.push(this.frame(frozenNodes, bridgedEdges, "Přesměrování ukazatelů"));
 
     this.values = afterVals;
     const aligned = this.layout(this.values, frozenNodes);
-    const f6 = this.frame(aligned, this.edges(aligned), "Seznam vyrovnán");
+    frames.push(this.frame(aligned, this.edges(aligned), "Seznam vyrovnán"));
 
-    return [f1, f2, f3, f4, f5, f6];
+    return frames;
   }
 
   findValue(value: number): Frame[] {

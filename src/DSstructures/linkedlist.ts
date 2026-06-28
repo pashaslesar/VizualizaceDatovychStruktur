@@ -24,6 +24,15 @@ const btnFindValue   = document.querySelector<HTMLButtonElement>("#btnFindValue"
 const btnRandom      = document.querySelector<HTMLButtonElement>("#btnRandom")!;
 const btnClear       = document.querySelector<HTMLButtonElement>("#btnClear")!;
 
+const limitBox = document.getElementById("llLimitBox");
+
+function blinkLimitBox() {
+  if (!limitBox) return;
+  limitBox.classList.remove("blink-limit");
+  void (limitBox as HTMLElement).offsetWidth;
+  limitBox.classList.add("blink-limit");
+}
+
 const renderer = new LinkedListRenderer(svg);
 setupZoom(svg);
 const timeline = new Timeline(
@@ -57,8 +66,27 @@ speedRange.oninput = () => {
 const num = () => Number(valInput.value) || 0;
 const pushFrames = (frames: any[]) => timeline.append(frames);
 
-btnInsertHead.onclick  = () => pushFrames(list.insertHead(num()));
-btnInsertTail.onclick  = () => pushFrames(list.insertTail(num()));
+let pendingLimitBlink = false;
+
+timeline.setOnReachedEnd(() => {
+  if (pendingLimitBlink) {
+    pendingLimitBlink = false;
+    blinkLimitBox();
+  }
+});
+
+btnInsertHead.onclick = () => {
+  const frames = list.insertHead(num());
+  const lastLabel = frames.at(-1)?.label ?? "";
+  pendingLimitBlink = lastLabel.includes("již existuje");
+  pushFrames(frames);
+};
+btnInsertTail.onclick = () => {
+  const frames = list.insertTail(num());
+  const lastLabel = frames.at(-1)?.label ?? "";
+  pendingLimitBlink = lastLabel.includes("již existuje");
+  pushFrames(frames);
+};
 btnDeleteHead.onclick  = () => pushFrames(list.deleteHead());
 btnDeleteTail.onclick  = () => pushFrames(list.deleteTail());
 btnDeleteValue.onclick = () => pushFrames(list.deleteValue(num()));
