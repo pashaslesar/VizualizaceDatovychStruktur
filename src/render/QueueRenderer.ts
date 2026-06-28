@@ -63,15 +63,19 @@ export class QueueRenderer extends BaseSvgRenderer {
     ): void {
         const isFront = !!(n as any).isFront;
         const isRear = !!(n as any).isRear;
+        const isLeaving = !!(n as any).isGhost && !!(n as any).ghostLeaving;
+        const isBlinkOff = !!(n as any).blinkOff;
 
         const stroke =
-            n.highlight ? "var(--hl-stroke)" :
-            (isFront || isRear) ? QUEUE_COLOR :
+            isLeaving ? "#ff5c5c" :
+            isBlinkOff ? "#2a2f3a" :
+            (n.highlight || isFront || isRear) ? QUEUE_COLOR :
             "#2a2f3a";
 
         const fill =
-            n.highlight ? "var(--hl-fill)" :
-            (isFront || isRear) ? "var(--hl-fill)" :
+            isLeaving ? "rgba(255, 92, 92, 0.12)" :
+            isBlinkOff ? "#1d2129" :
+            (n.highlight || isFront || isRear) ? "var(--hl-fill)" :
             "#1d2129";
 
         setStyleVar(rectEl, "stroke", stroke);

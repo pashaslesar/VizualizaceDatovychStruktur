@@ -108,7 +108,8 @@ export class StackOperations {
             ghostValue: removedValue,
             ghostAtTopPos: true,
             hideRealTop: true,
-        });
+            ghostLeaving: true,
+        } as any);
         frames.push(this.frame(ghostInPlace, this.edges(ghostInPlace), `${removedValue} opouští zásobník`));
 
         this.values.pop();
@@ -139,17 +140,20 @@ export class StackOperations {
         frames.push(this.frame(highlighted, this.edges(highlighted), `Vrchol = ${value}`));
 
         for (let i = 0; i < 2; i++) {
-            const off = this.frame(this.layout(this.values), this.edges(this.layout(this.values)), " ");
-            off.durationMs = 70;
+            const offNodes = this.layout(this.values);
+            (offNodes[topIndex] as any).blinkOff = true;
+            const off = this.frame(offNodes, this.edges(offNodes), " ");
+            off.durationMs = 50;
             frames.push(off);
 
             const onNodes = this.layout(this.values, { highlightIndex: topIndex });
             const on = this.frame(onNodes, this.edges(onNodes), " ");
-            on.durationMs = 70;
+            on.durationMs = 50;
             frames.push(on);
         }
 
-        frames.push(this.frame(highlighted, this.edges(highlighted), `Vrchol = ${value}`));
+        const settled = this.layout(this.values);
+        frames.push(this.frame(settled, this.edges(settled), `Vrchol = ${value}`));
         return frames;
     }
 
@@ -172,17 +176,20 @@ export class StackOperations {
         frames.push(this.frame(highlighted, this.edges(highlighted), `Dno = ${value}`));
 
         for (let i = 0; i < 2; i++) {
-            const off = this.frame(this.layout(this.values), this.edges(this.layout(this.values)), " ");
-            off.durationMs = 70;
+            const offNodes = this.layout(this.values);
+            (offNodes[bottomIndex] as any).blinkOff = true;
+            const off = this.frame(offNodes, this.edges(offNodes), " ");
+            off.durationMs = 50;
             frames.push(off);
 
             const onNodes = this.layout(this.values, { highlightIndex: bottomIndex });
             const on = this.frame(onNodes, this.edges(onNodes), " ");
-            on.durationMs = 70;
+            on.durationMs = 50;
             frames.push(on);
         }
 
-        frames.push(this.frame(highlighted, this.edges(highlighted), `Dno = ${value}`));
+        const settled = this.layout(this.values);
+        frames.push(this.frame(settled, this.edges(settled), `Dno = ${value}`));
         return frames;
     }
 
@@ -266,10 +273,11 @@ export class StackOperations {
                 x,
                 y: ghostY,
                 isGhost: true,
+                ghostLeaving: !!(opts as any).ghostLeaving,
                 highlight: true,
                 isTop: false,
                 isBottom: false,
-            });
+            } as any);
         }
 
         return nodes;

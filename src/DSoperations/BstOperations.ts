@@ -110,7 +110,7 @@ export class BstOperations {
                     blinkFast(this.layout({ highlightId: cur.id }), this.edges(), " ");
                 }
 
-                frames.push(this.frame(this.layout({ highlightId: cur.id }), this.edges(), "Nalezeno"));
+                frames.push(this.frame(this.layout(), this.edges(), "Nalezeno"));
                 return frames;
             }
 

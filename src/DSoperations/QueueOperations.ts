@@ -107,6 +107,18 @@ export class QueueOperations {
         });
         frames.push(this.frame(highlighted, this.edges(highlighted), "Odebírám prvek z čela fronty"));
 
+        const front = highlighted[0];
+        const ghostNode = {
+            id: 100000 + NEXT_ID++,
+            value: removed.value,
+            x: front.x,
+            y: front.y,
+            isGhost: true,
+            ghostLeaving: true,
+        } as any;
+        const survivors = highlighted.slice(1).map(n => ({ ...n, highlight: false }));
+        frames.push(this.frame([ghostNode, ...survivors], this.edges(survivors), `${removed.value} opouští frontu`));
+
         this.items.shift();
 
         const afterNodes = this.layout(this.items);
@@ -137,17 +149,57 @@ export class QueueOperations {
 
         for (let i = 0; i < 2; i++) {
             const offNodes = this.layout(this.items);
+            (offNodes[0] as any).blinkOff = true;
             const off = this.frame(offNodes, this.edges(offNodes), " ");
-            off.durationMs = 70;
+            off.durationMs = 50;
             frames.push(off);
 
             const onNodes = this.layout(this.items, { highlightIndex: 0 });
             const on = this.frame(onNodes, this.edges(onNodes), " ");
-            on.durationMs = 70;
+            on.durationMs = 50;
             frames.push(on);
         }
 
-        frames.push(this.frame(highlighted, this.edges(highlighted), `Čelo = ${value}`));
+        const settled = this.layout(this.items);
+        frames.push(this.frame(settled, this.edges(settled), `Čelo = ${value}`));
+        return frames;
+    }
+
+    peekRear(): Frame[] {
+        const frames: Frame[] = [];
+
+        const nodes = this.layout(this.items);
+        const edges = this.edges(nodes);
+        frames.push(this.frame(nodes, edges, "Výchozí stav"));
+
+        if (this.items.length === 0) {
+            frames.push(this.frame(nodes, edges, "Fronta je prázdná"));
+            return frames;
+        }
+
+        const rearIndex = this.items.length - 1;
+        const value = this.items[rearIndex].value;
+
+        const highlighted = this.layout(this.items, {
+            highlightIndex: rearIndex,
+        });
+        frames.push(this.frame(highlighted, this.edges(highlighted), `Konec = ${value}`));
+
+        for (let i = 0; i < 2; i++) {
+            const offNodes = this.layout(this.items);
+            (offNodes[rearIndex] as any).blinkOff = true;
+            const off = this.frame(offNodes, this.edges(offNodes), " ");
+            off.durationMs = 50;
+            frames.push(off);
+
+            const onNodes = this.layout(this.items, { highlightIndex: rearIndex });
+            const on = this.frame(onNodes, this.edges(onNodes), " ");
+            on.durationMs = 50;
+            frames.push(on);
+        }
+
+        const settled = this.layout(this.items);
+        frames.push(this.frame(settled, this.edges(settled), `Konec = ${value}`));
         return frames;
     }
 

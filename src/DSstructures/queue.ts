@@ -17,6 +17,7 @@ const valueInput  = document.querySelector<HTMLInputElement>("#valueInput")!;
 const enqueueBtn  = document.querySelector<HTMLButtonElement>("#enqueueBtn")!;
 const dequeueBtn  = document.querySelector<HTMLButtonElement>("#dequeueBtn")!;
 const peekBtn     = document.querySelector<HTMLButtonElement>("#peekBtn")!;
+const peekRearBtn = document.querySelector<HTMLButtonElement>("#peekRearBtn")!;
 const randomBtn   = document.querySelector<HTMLButtonElement>("#randomBtn")!;
 const resetBtn    = document.querySelector<HTMLButtonElement>("#resetBtn")!;
 
@@ -74,7 +75,8 @@ enqueueBtn.onclick = () => {
 };
 
 dequeueBtn.onclick = () => timeline.append(ops.dequeue());
-peekBtn.onclick    = () => timeline.append(ops.peek());
+peekBtn.onclick     = () => timeline.append(ops.peek());
+peekRearBtn.onclick = () => timeline.append(ops.peekRear());
 randomBtn.onclick  = () => timeline.append(ops.setRandom(3 + Math.floor(Math.random() * 4)));
 resetBtn.onclick   = () => timeline.append(ops.reset());
 

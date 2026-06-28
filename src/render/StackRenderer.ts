@@ -62,18 +62,23 @@ export class StackRenderer extends BaseSvgRenderer {
         _textEl: SVGTextElement,
     ): void {
         const isTop = !!(n as any).isTop;
+        const isBottom = !!(n as any).isBottom;
         const isGhost = !!(n as any).isGhost;
+        const isLeaving = !!(n as any).ghostLeaving;
+        const isBlinkOff = !!(n as any).blinkOff;
 
         const stroke =
+            isGhost && isLeaving ? "#ff5c5c" :
             isGhost ? "var(--hl-stroke)" :
-            n.highlight ? "var(--hl-stroke)" :
-            isTop ? "var(--primary)" :
+            isBlinkOff ? "#2a2f3a" :
+            (n.highlight || isTop || isBottom) ? "var(--primary)" :
             "#2a2f3a";
 
         const fill =
+            isGhost && isLeaving ? "rgba(255, 92, 92, 0.12)" :
             isGhost ? "var(--hl-fill)" :
-            n.highlight ? "var(--hl-fill)" :
-            isTop ? "rgba(57, 217, 138, 0.12)" :
+            isBlinkOff ? "#1d2129" :
+            (n.highlight || isTop || isBottom) ? "rgba(57, 217, 138, 0.12)" :
             "#1d2129";
 
         setStyleVar(rectEl, "stroke", stroke);

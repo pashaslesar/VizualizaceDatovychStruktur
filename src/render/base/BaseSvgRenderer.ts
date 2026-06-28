@@ -66,6 +66,8 @@ export const setStyleVar = (el: SVGElement, prop: string, value: string) => {
 
                     isRoot:  t < 0.5 ? (na as any).isRoot  : (nb as any).isRoot,
                     isGhost: t < 0.5 ? (na as any).isGhost : (nb as any).isGhost,
+                    ghostLeaving: t < 0.5 ? (na as any).ghostLeaving : (nb as any).ghostLeaving,
+                    blinkOff: t < 0.5 ? (na as any).blinkOff : (nb as any).blinkOff,
                     index:   nb.index ?? na.index,
 
                     badgeHead: t < 0.5 ? (na as any).badgeHead : (nb as any).badgeHead,
