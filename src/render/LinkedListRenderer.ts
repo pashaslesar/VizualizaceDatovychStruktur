@@ -1,6 +1,9 @@
 import type { NodeState } from "../core/types";
 import { BaseSvgRenderer, setStyleVar, NODE_W } from "./base/BaseSvgRenderer";
-import type { BadgeSpec } from "./base/BaseSvgRenderer"; 
+import type { BadgeSpec } from "./base/BaseSvgRenderer";
+
+const ACTIVE_STROKE = "#29c5ff";
+const ACTIVE_FILL = "rgba(41, 197, 255, 0.18)";
 
 export class LinkedListRenderer extends BaseSvgRenderer {
     protected applyNodeStyle(n: NodeState, _g: SVGGElement, rect: SVGRectElement) {
@@ -17,13 +20,13 @@ export class LinkedListRenderer extends BaseSvgRenderer {
 
         const stroke =
             isGhost ? "#ff5c5c" :
-            n.highlight ? "var(--hl-stroke)" :
+            n.highlight ? ACTIVE_STROKE :
             (showHead || showTail) ? "var(--hl-stroke)" :
             "#2a2f3a";
 
         const fill =
             isGhost ? "rgba(255, 92, 92, 0.12)" :
-            n.highlight ? "var(--hl-fill)" :
+            n.highlight ? ACTIVE_FILL :
             (showHead || showTail) ? "var(--hl-fill)" :
             "#1d2129";
 
